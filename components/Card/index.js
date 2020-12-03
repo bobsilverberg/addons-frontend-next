@@ -1,5 +1,4 @@
 import makeClassName from "classnames";
-import { oneLine } from "common-tags";
 import * as React from "react";
 import PropTypes from "prop-types";
 

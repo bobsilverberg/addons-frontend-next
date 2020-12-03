@@ -8,8 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@mozilla-protocol/tokens": "^5.0.5",
     "next": "10.0.3",
+    "photon-colors": "^3.3.2",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "sass": "^1.29.0",
+    "swr": "^0.3.9"
   }
 }

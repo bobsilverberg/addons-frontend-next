@@ -2,10 +2,10 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 
-import Layout from '../../../components/Layout';
-import Error from '../../_error';
+import Layout from 'components/Layout';
+import Error from 'pages/_error';
 // import AddonMoreInfo from "../../../components/AddonMoreInfo";
-import styles from '../../../styles/Home.module.css';
+import styles from 'styles/Home.module.css';
 
 // const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -22,20 +22,16 @@ function useRatings(addonId) {
   };
 }
 
-export default function Addon({ addonData, statusCode }) {
+export default function Addon({ aProp, addonData, i18n, statusCode }) {
   console.log('----- In Addon, data: ', addonData);
   const { ratings, isLoading, isError } = useRatings(addonData.id);
   console.log('----- In Addon, ratings data: ', ratings);
   const router = useRouter();
-  const { app } = router.query;
+  const { app, lang } = router.query;
   console.log('----- In Addon, app: ', app);
-  const { locale, locales, defaultLocale } = router;
-  console.log(
-    '----- In Addon, locale, locales, defaultLocale: ',
-    locale,
-    locales,
-    defaultLocale,
-  );
+  console.log('----- In Addon, lang: ', lang);
+  console.log('----- In Addon, aProp: ', aProp);
+  console.log('----- In Addon, i18n: ', i18n);
 
   if (statusCode) {
     return <Error statusCode={statusCode} />;

@@ -4,7 +4,7 @@ import useSWR from 'swr';
 
 import Layout from 'components/Layout';
 import Error from 'pages/_error';
-// import AddonMoreInfo from "../../../components/AddonMoreInfo";
+import AddonBadges from 'components/AddonBadges';
 import styles from 'styles/Home.module.css';
 
 // const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -54,7 +54,7 @@ export default function Addon({ aProp, addonData, i18n, statusCode }) {
             {ratings ? ratings.grouped_ratings[1] : null}
           </div>
 
-          {/* <AddonMoreInfo addon={addonData} /> */}
+          <AddonMoreInfo addon={addonData} i18n={i18n} />
         </main>
       </div>
     </Layout>

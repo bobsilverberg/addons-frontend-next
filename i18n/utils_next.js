@@ -5,7 +5,7 @@ import Jed from 'jed';
 import moment from 'moment';
 import getConfig from 'next/config';
 
-import log from 'logger_next';
+import log from 'utils/logger_next';
 // import log from 'core/logger';
 // import { RTL, LTR } from 'core/constants';
 // import type { I18nType } from 'core/types/i18n';
@@ -238,15 +238,15 @@ export function makeMomentLocale(locale) {
   return locale.replace('_', '-').toLowerCase();
 }
 
-// // Functionality based on oneLine form declandewet/common-tags https://goo.gl/4PzaJI
-// // If this function is changed, `babel-gettext-extractor` also needs to be
-// // updated.
-// function oneLineTranslationString(translationKey) {
-//   if (translationKey && translationKey.replace && translationKey.trim) {
-//     return translationKey.replace(/(?:\n(?:\s*))+/g, ' ').trim();
-//   }
-//   return translationKey;
-// }
+// Functionality based on oneLine form declandewet/common-tags https://goo.gl/4PzaJI
+// If this function is changed, `babel-gettext-extractor` also needs to be
+// updated.
+function oneLineTranslationString(translationKey) {
+  if (translationKey && translationKey.replace && translationKey.trim) {
+    return translationKey.replace(/(?:\n(?:\s*))+/g, ' ').trim();
+  }
+  return translationKey;
+}
 
 // type FormatFilesizeParams = {|
 //   _filesize?: typeof filesize,

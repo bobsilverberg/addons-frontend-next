@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 
 import { makeI18n } from 'i18n/utils_next';
 import 'styles/globals.css';
+import 'components/AddonBadges/styles.scss';
 
 function MyApp({ Component, pageProps }) {
   const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();

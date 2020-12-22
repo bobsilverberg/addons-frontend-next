@@ -6,7 +6,7 @@
 // import translate from 'core/i18n/translate';
 // import { hasPermission } from 'amo/reducers/users';
 // import type { AddonType } from 'core/types/addons';
-// import { isAddonAuthor, trimAndAddProtocolToUrl } from 'core/utils';
+import { isAddonAuthor, trimAndAddProtocolToUrl } from 'utils';
 // import Card from 'ui/components/Card';
 // import DefinitionList, { Definition } from 'ui/components/DefinitionList';
 // import LoadingText from 'ui/components/LoadingText';
@@ -33,9 +33,9 @@
 //   location: ReactRouterLocationType,
 // |};
 
-import * as React from "react";
+import * as React from 'react';
 
-import Card from "../Card";
+import Card from '../Card';
 
 export class AddonMoreInfo extends React.Component {
   listContent() {
@@ -61,7 +61,7 @@ export class AddonMoreInfo extends React.Component {
       homepage = (
         <li>
           <a className="AddonMoreInfo-homepage-link" href={homepage}>
-            {i18n.gettext("Homepage")}
+            {i18n.gettext('Homepage')}
           </a>
         </li>
       );
@@ -72,7 +72,7 @@ export class AddonMoreInfo extends React.Component {
       supportUrl = (
         <li>
           <a className="AddonMoreInfo-support-link" href={supportUrl}>
-            {i18n.gettext("Support site")}
+            {i18n.gettext('Support site')}
           </a>
         </li>
       );
@@ -86,7 +86,7 @@ export class AddonMoreInfo extends React.Component {
             className="AddonMoreInfo-support-email"
             href={`mailto:${supportEmail}`}
           >
-            {i18n.gettext("Support Email")}
+            {i18n.gettext('Support Email')}
           </a>
         </li>
       );
@@ -101,10 +101,10 @@ export class AddonMoreInfo extends React.Component {
           className="AddonMoreInfo-stats-link"
           href={addQueryParams(
             `/addon/${addon.slug}/statistics/`,
-            getQueryParametersForAttribution(location)
+            getQueryParametersForAttribution(location),
           )}
         >
-          {i18n.gettext("Visit stats dashboard")}
+          {i18n.gettext('Visit stats dashboard')}
         </Link>
       );
     }
@@ -119,11 +119,11 @@ export class AddonMoreInfo extends React.Component {
         ? {
             to: addQueryParams(
               `/addon/${addon.slug}/license/`,
-              getQueryParametersForAttribution(location)
+              getQueryParametersForAttribution(location),
             ),
           }
         : { href: license.url, prependClientApp: false, prependLang: false };
-      const licenseName = license.name || i18n.gettext("Custom License");
+      const licenseName = license.name || i18n.gettext('Custom License');
 
       versionLicenseLink = license.url ? (
         <Link className="AddonMoreInfo-license-link" {...linkProps}>
@@ -145,11 +145,11 @@ export class AddonMoreInfo extends React.Component {
         ? i18n.sprintf(
             // translators: This will output, in English:
             // "2 months ago (Dec 12 2016)"
-            i18n.gettext("%(timeFromNow)s (%(date)s)"),
+            i18n.gettext('%(timeFromNow)s (%(date)s)'),
             {
               timeFromNow: i18n.moment(lastUpdated).fromNow(),
-              date: i18n.moment(lastUpdated).format("ll"),
-            }
+              date: i18n.moment(lastUpdated).format('ll'),
+            },
           )
         : null,
       versionLicenseLink,
@@ -158,10 +158,10 @@ export class AddonMoreInfo extends React.Component {
           className="AddonMoreInfo-privacy-policy-link"
           to={addQueryParams(
             `/addon/${addon.slug}/privacy/`,
-            getQueryParametersForAttribution(location)
+            getQueryParametersForAttribution(location),
           )}
         >
-          {i18n.gettext("Read the privacy policy for this add-on")}
+          {i18n.gettext('Read the privacy policy for this add-on')}
         </Link>
       ) : null,
       eulaLink: addon.has_eula ? (
@@ -169,10 +169,10 @@ export class AddonMoreInfo extends React.Component {
           className="AddonMoreInfo-eula-link"
           to={addQueryParams(
             `/addon/${addon.slug}/eula/`,
-            getQueryParametersForAttribution(location)
+            getQueryParametersForAttribution(location),
           )}
         >
-          {i18n.gettext("Read the license agreement for this add-on")}
+          {i18n.gettext('Read the license agreement for this add-on')}
         </Link>
       ) : null,
       versionHistoryLink: (
@@ -181,10 +181,10 @@ export class AddonMoreInfo extends React.Component {
             className="AddonMoreInfo-version-history-link"
             to={addQueryParams(
               `/addon/${addon.slug}/versions/`,
-              getQueryParametersForAttribution(location)
+              getQueryParametersForAttribution(location),
             )}
           >
-            {i18n.gettext("See all versions")}
+            {i18n.gettext('See all versions')}
           </Link>
         </li>
       ),
@@ -211,7 +211,7 @@ export class AddonMoreInfo extends React.Component {
           {(homepage || supportUrl || supportEmail) && (
             <Definition
               className="AddonMoreInfo-links"
-              term={i18n.gettext("Add-on Links")}
+              term={i18n.gettext('Add-on Links')}
             >
               <ul className="AddonMoreInfo-links-contents-list">
                 {homepage}
@@ -223,7 +223,7 @@ export class AddonMoreInfo extends React.Component {
           {version && (
             <Definition
               className="AddonMoreInfo-version"
-              term={i18n.gettext("Version")}
+              term={i18n.gettext('Version')}
             >
               {version}
             </Definition>
@@ -231,7 +231,7 @@ export class AddonMoreInfo extends React.Component {
           {filesize && (
             <Definition
               className="AddonMoreInfo-filesize"
-              term={i18n.gettext("Size")}
+              term={i18n.gettext('Size')}
             >
               {filesize}
             </Definition>
@@ -239,7 +239,7 @@ export class AddonMoreInfo extends React.Component {
           {versionLastUpdated && (
             <Definition
               className="AddonMoreInfo-last-updated"
-              term={i18n.gettext("Last updated")}
+              term={i18n.gettext('Last updated')}
             >
               {versionLastUpdated}
             </Definition>
@@ -247,7 +247,7 @@ export class AddonMoreInfo extends React.Component {
           {versionLicenseLink && (
             <Definition
               className="AddonMoreInfo-license"
-              term={i18n.gettext("License")}
+              term={i18n.gettext('License')}
             >
               {versionLicenseLink}
             </Definition>
@@ -255,7 +255,7 @@ export class AddonMoreInfo extends React.Component {
           {privacyPolicyLink && (
             <Definition
               className="AddonMoreInfo-privacy-policy"
-              term={i18n.gettext("Privacy Policy")}
+              term={i18n.gettext('Privacy Policy')}
             >
               {privacyPolicyLink}
             </Definition>
@@ -263,7 +263,7 @@ export class AddonMoreInfo extends React.Component {
           {eulaLink && (
             <Definition
               className="AddonMoreInfo-eula"
-              term={i18n.gettext("End-User License Agreement")}
+              term={i18n.gettext('End-User License Agreement')}
             >
               {eulaLink}
             </Definition>
@@ -271,7 +271,7 @@ export class AddonMoreInfo extends React.Component {
           {versionHistoryLink && (
             <Definition
               className="AddonMoreInfo-version-history"
-              term={i18n.gettext("Version History")}
+              term={i18n.gettext('Version History')}
             >
               <ul className="AddonMoreInfo-links-contents-list">
                 {versionHistoryLink}
@@ -281,7 +281,7 @@ export class AddonMoreInfo extends React.Component {
           {statsLink && (
             <Definition
               className="AddonMoreInfo-stats"
-              term={i18n.gettext("Usage Statistics")}
+              term={i18n.gettext('Usage Statistics')}
             >
               {statsLink}
             </Definition>
@@ -297,7 +297,7 @@ export class AddonMoreInfo extends React.Component {
     const { i18n } = this.props;
 
     return (
-      <Card className="AddonMoreInfo" header={i18n.gettext("More information")}>
+      <Card className="AddonMoreInfo" header={i18n.gettext('More information')}>
         {this.listContent()}
       </Card>
     );

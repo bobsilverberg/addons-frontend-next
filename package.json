@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "jest --watch",
+    "test-debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch"
   },
   "dependencies": {
     "@mozilla-protocol/tokens": "^5.0.5",
@@ -13,10 +15,25 @@
     "jed": "^1.1.1",
     "moment": "^2.29.1",
     "next": "10.0.3",
+    "object.values": "^1.1.2",
     "photon-colors": "^3.3.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "sass": "^1.29.0",
     "swr": "^0.3.9"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "@loadable/babel-plugin": "^5.13.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.16.0",
+    "eslint-config-amo": "^4.0.1",
+    "eslint-plugin-amo": "^1.11.1",
+    "jest": "^26.6.3",
+    "jest-watch-typeahead": "^0.6.1",
+    "prettier": "^2.2.1"
   }
 }

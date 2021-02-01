@@ -4,7 +4,7 @@ import useSWR from 'swr';
 
 import Layout from 'components/Layout';
 import Error from 'pages/_error';
-import AddonBadges from 'components/AddonBadges';
+// import AddonBadges from 'components/AddonBadges';
 import styles from 'styles/Home.module.css';
 
 // const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -54,7 +54,7 @@ export default function Addon({ aProp, addonData, i18n, statusCode }) {
             {ratings ? ratings.grouped_ratings[1] : null}
           </div>
 
-          <AddonMoreInfo addon={addonData} i18n={i18n} />
+          {/* <AddonMoreInfo addon={addonData} i18n={i18n} /> */}
         </main>
       </div>
     </Layout>
@@ -62,8 +62,7 @@ export default function Addon({ aProp, addonData, i18n, statusCode }) {
 }
 
 export async function getServerSideProps(context) {
-  // console.log("----- in getServerSideProps, context: ", context);
-  console.log('----- in getServerSideProps, context.locale: ', context.locale);
+  console.log('----- in getServerSideProps, context: ', context);
   // Fetch data from external API
   const res = await fetch(
     `	https://addons-dev.allizom.org/api/v4/addons/addon/webmail-ad-blocker/?app=firefox&appversion=84.0&lang=en-US&wrap_outgoing_links=true`,

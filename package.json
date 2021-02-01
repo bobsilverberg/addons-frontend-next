@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@mozilla-protocol/tokens": "^5.0.5",
     "filesize": "^6.1.0",
     "jed": "^1.1.1",

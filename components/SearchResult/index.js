@@ -19,10 +19,10 @@ import {
 } from '../..constants';
 // import translate from 'amo/i18n/translate';
 import { getAddonIconUrl, getPreviewImage } from '../../utils/imageUtils';
-import Icon from 'amo/components/Icon';
+import Icon from '../Icon';
 import LoadingText from 'amo/components/LoadingText';
-import Rating from 'amo/components/Rating';
-import PromotedBadge from 'amo/components/PromotedBadge';
+// import Rating from 'amo/components/Rating';
+// import PromotedBadge from 'amo/components/PromotedBadge';
 
 import './styles.modules.scss';
 

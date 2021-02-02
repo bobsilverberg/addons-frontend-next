@@ -22,12 +22,12 @@ const defaultLang = configGet('defaultLang');
 const langs = configGet('langs');
 const langMap = configGet('langMap');
 
-console.log(
-  '--- in utils_next, defaultLang, langs, langMap :',
-  defaultLang,
-  langs,
-  langMap,
-);
+// console.log(
+//   '--- in utils_next, defaultLang, langs, langMap :',
+//   defaultLang,
+//   langs,
+//   langMap,
+// );
 // The full list of supported langs including those that
 // will be mapped by sanitizeLanguage.
 const supportedLangs = langs.concat(Object.keys(langMap));
@@ -328,7 +328,7 @@ export function makeI18n(
   _Jed = Jed,
   { _Intl = typeof Intl !== 'undefined' ? Intl : undefined } = {},
 ) {
-  console.log('----- log: ', log);
+  // console.log('----- log: ', log);
 
   const i18n = new _Jed(i18nData);
   i18n.lang = lang;

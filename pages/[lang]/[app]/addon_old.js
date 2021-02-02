@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 
+import { useI18nState } from 'context/i18n';
 import Layout from 'components/Layout';
 import Error from 'pages/_error';
 // import AddonBadges from 'components/AddonBadges';
@@ -23,6 +24,9 @@ function useRatings(addonId) {
 }
 
 export default function Addon({ aProp, addonData, statusCode }) {
+  const { i18n } = useI18nState();
+  console.log('----- In Addon, i18n: ', i18n);
+
   console.log('----- In Addon, data: ', addonData);
   const { ratings, isLoading, isError } = useRatings(addonData.id);
   console.log('----- In Addon, ratings data: ', ratings);
@@ -61,7 +65,7 @@ export default function Addon({ aProp, addonData, statusCode }) {
 }
 
 export async function getServerSideProps(context) {
-  console.log('----- in getServerSideProps, context: ', context);
+  // console.log('----- in getServerSideProps, context: ', context);
   // Fetch data from external API
   const res = await fetch(
     `	https://addons-dev.allizom.org/api/v4/addons/addon/webmail-ad-blocker/?app=firefox&appversion=84.0&lang=en-US&wrap_outgoing_links=true`,

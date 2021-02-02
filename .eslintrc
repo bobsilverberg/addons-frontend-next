@@ -1,0 +1,104 @@
+{
+  "extends": [
+    "amo",
+    "plugin:amo/recommended"
+  ],
+  "globals": {
+    "CLIENT_CONFIG": true,
+    "document": true,
+    "webpackIsomorphicTools": true,
+    "ga": true,
+    // https://flow.org/en/docs/types/utilities/#toc-objmap
+    "$ObjMap": true,
+    // https://flow.org/en/docs/types/utilities/#toc-propertytype
+    "$PropertyType": true,
+    // These are undocumented utilities that ship with Flow
+    // https://github.com/facebook/flow/issues/875
+    "$ReadOnlyArray": true,
+    "$Rest": true,
+    "$Shape": true,
+    "$Keys": true,
+    "$Values": true,
+    // See: https://github.com/facebook/flow/issues/1609
+    "SyntheticEvent": true,
+    "SyntheticInputEvent": true,
+    // See: https://github.com/facebook/flow/issues/5627
+    "TimeoutID": true,
+    // Standard DOM globals:
+    "Generator": true,
+    "HTMLAnchorElement": true,
+    "HTMLButtonElement": true,
+    "HTMLElement": true,
+    "HTMLInputElement": true,
+    "HTMLSelectElement": true,
+    "HTMLTextAreaElement": true,
+    "Node": true,
+    // This is used to send form data to the API.
+    "FormData": true,
+    // This is used to upload files in the browser.
+    "File": true,
+    "FileReader": true,
+    "ProgressEvent": true,
+    // Types that can be used with sendBeacon:
+    "BodyInit": true,
+    // Seems to be needed for next.js fetch
+    "fetch": false
+  },
+  "parser": "babel-eslint",
+  "plugins": [
+    "jest"
+  ],
+  "rules": {
+    // These rules are not compatible with Prettier.
+    "implicit-arrow-linebreak": "off",
+    "indent": "off",
+    "no-mixed-operators": "off",
+    "operator-linebreak": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/jsx-curly-newline": "off",
+    // We omit `debug` because we don't turn that on by default.
+    "amo/only-log-strings": ["error", {
+      "methods": ["fatal", "info", "error", "warn"]
+    }],
+    "react/default-props-match-prop-types": "off",
+    // This rule is disabled because it outputs a lot of false positives, see:
+    // https://github.com/benmosher/eslint-plugin-import/issues/1343
+    "import/no-cycle": "off",
+    // suppress errors for missing 'import React' in files
+    "react/react-in-jsx-scope": "off",
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight"],
+        "aspects": ["invalidHref", "preferButton"]
+      }
+    ]
+  },
+  "settings": {
+    "import/core-modules": [
+      // This is a workaround for: https://github.com/benmosher/eslint-plugin-import/issues/793
+      "redux-saga/effects",
+    ],
+    "import/ignore": [
+      // Because of CommonJS incompatibility, we can't
+      // check for bad imports in node_modules.
+      "node_modules",
+      // Ignore non-JS imports.
+      "\\.gif$",
+      "\\.jpeg$",
+      "\\.jpg$",
+      "\\.mp4$",
+      "\\.png$",
+      "\\.scss$",
+      "\\.svg$",
+      "\\.webm$"
+    ],
+    "import/resolver": {
+      "node": {
+        // This adds ./src for relative imports.
+        "moduleDirectory": ["node_modules", "src"]
+      }
+    }
+  }
+}

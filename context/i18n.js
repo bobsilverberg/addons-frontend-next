@@ -10,13 +10,11 @@ const I18nContext = createContext();
 // TODO: Not sure how to get access to lang here. Just set it to en-US for now.
 
 export function I18nProvider({ children, lang }) {
-  const [i18n, setI18n] = useState();
+  const [i18n, setI18n] = useState(makeI18n({}, lang));
 
   const setLang = (langToSet = lang) => {
     setI18n(makeI18n({}, langToSet));
   };
-
-  setLang();
 
   const state = {
     i18n,

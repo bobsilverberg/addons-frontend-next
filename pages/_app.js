@@ -11,14 +11,12 @@ function MyApp({ Component, pageProps }) {
   // Here's a way to get config values into _app.js
   // const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
-  // We can add page props to pass into every component.
-  const props = { ...pageProps };
-  const aProp = 'Hello';
-  props.aProp = aProp;
-
   // We can get params from the querystring
   const router = useRouter();
-  const { lang } = router.query;
+  const { app, lang } = router.query;
+
+  // We can add page props to pass into every component.
+  const props = { ...pageProps, app, lang };
 
   return (
     <I18nProvider lang={lang}>

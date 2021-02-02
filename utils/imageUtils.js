@@ -1,10 +1,9 @@
-import { isAllowedOrigin } from 'amo/utils';
-import fallbackIcon from 'amo/img/icons/default-64.png';
+import { isAllowedOrigin } from '.';
 
 export function getAddonIconUrl(addon) {
   return addon && isAllowedOrigin(addon.icon_url)
     ? addon.icon_url
-    : fallbackIcon;
+    : '/img/icons/default-64.png';
 }
 
 export const getPreviewImage = (

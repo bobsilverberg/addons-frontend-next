@@ -5,26 +5,26 @@ import makeClassName from 'classnames';
 // import { compose } from 'redux';
 import Link from 'next/link';
 
-import { getAddonURL, nl2br, sanitizeHTML } from '../../utils';
+import {
+  addQueryParams,
+  getAddonURL,
+  getPromotedCategory,
+  nl2br,
+  sanitizeHTML,
+} from '../../utils';
 import {
   ADDON_TYPE_STATIC_THEME,
   DEFAULT_UTM_SOURCE,
   DEFAULT_UTM_MEDIUM,
 } from '../..constants';
 // import translate from 'amo/i18n/translate';
-import { getAddonIconUrl, getPreviewImage } from 'amo/imageUtils';
-import { getPromotedCategory } from 'amo/utils/addons';
-import { addQueryParams } from 'amo/utils/url';
+import { getAddonIconUrl, getPreviewImage } from '../../utils/imageUtils';
 import Icon from 'amo/components/Icon';
 import LoadingText from 'amo/components/LoadingText';
 import Rating from 'amo/components/Rating';
 import PromotedBadge from 'amo/components/PromotedBadge';
-import type { AppState } from 'amo/store';
-import type { AddonType, CollectionAddonType } from 'amo/types/addons';
-import type { I18nType } from 'amo/types/i18n';
-import type { ReactRouterHistoryType } from 'amo/types/router';
 
-import './styles.scss';
+import './styles.modules.scss';
 
 type Props = {|
   addon?: AddonType | CollectionAddonType,

@@ -1,3 +1,24 @@
+export const addonsServerDevCDN = 'https://addons-dev-cdn.allizom.org';
+export const addonsServerProdCDN = 'https://addons.cdn.mozilla.net';
+export const addonsServerStageCDN = 'https://addons-stage-cdn.allizom.org';
+
+export const devDomain = 'addons-dev.allizom.org';
+export const prodDomain = 'addons.mozilla.org';
+export const stageDomain = 'addons.allizom.org';
+
+export const apiDevHost = `https://${devDomain}`;
+export const apiProdHost = `https://${prodDomain}`;
+export const apiStageHost = `https://${stageDomain}`;
+
+export const baseUrlDev = apiDevHost;
+export const baseUrlProd = apiProdHost;
+export const baseUrlStage = apiStageHost;
+
+export const sentryHost = 'https://sentry.prod.mozaws.net';
+export const analyticsHost = 'https://www.google-analytics.com';
+
+const addonsFrontendCDN = 'https://addons-amo.cdn.mozilla.net';
+
 module.exports = {
   serverRuntimeConfig: {
     // Will only be available on the server side
@@ -105,5 +126,11 @@ module.exports = {
       'pt-pt': 'pt',
       'sv-se': 'sv',
     },
+    // The CDN host for AMO.
+    amoCDN: addonsServerProdCDN,
+    staticHost: addonsFrontendCDN,
+    apiHost: apiProdHost,
+    apiPath: '/api/',
+    apiVersion: 'v5',
   },
 };

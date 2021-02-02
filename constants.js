@@ -11,3 +11,28 @@ export const DEFAULT_API_PAGE_SIZE = 25;
 
 export const DEFAULT_UTM_SOURCE = 'addons.mozilla.org';
 export const DEFAULT_UTM_MEDIUM = 'referral';
+
+// Promoted categories
+export const LINE = 'line';
+export const RECOMMENDED = 'recommended';
+export const SPONSORED = 'sponsored';
+export const SPOTLIGHT = 'spotlight';
+export const STRATEGIC = 'strategic';
+export const VERIFIED = 'verified';
+
+export const ALL_PROMOTED_CATEGORIES = [
+  LINE,
+  RECOMMENDED,
+  SPONSORED,
+  SPOTLIGHT,
+  STRATEGIC,
+  VERIFIED,
+];
+export const BADGE_CATEGORIES = [LINE, RECOMMENDED, VERIFIED];
+export const EXCLUDE_WARNING_CATEGORIES = [
+  LINE,
+  RECOMMENDED,
+  SPONSORED,
+  SPOTLIGHT,
+  VERIFIED,
+];

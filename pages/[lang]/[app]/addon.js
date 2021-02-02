@@ -22,7 +22,7 @@ function useRatings(addonId) {
   };
 }
 
-export default function Addon({ aProp, addonData, i18n, statusCode }) {
+export default function Addon({ aProp, addonData, statusCode }) {
   console.log('----- In Addon, data: ', addonData);
   const { ratings, isLoading, isError } = useRatings(addonData.id);
   console.log('----- In Addon, ratings data: ', ratings);
@@ -31,7 +31,6 @@ export default function Addon({ aProp, addonData, i18n, statusCode }) {
   console.log('----- In Addon, app: ', app);
   console.log('----- In Addon, lang: ', lang);
   console.log('----- In Addon, aProp: ', aProp);
-  console.log('----- In Addon, i18n: ', i18n);
 
   if (statusCode) {
     return <Error statusCode={statusCode} />;

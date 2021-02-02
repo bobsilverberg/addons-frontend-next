@@ -1,7 +1,9 @@
+import React from 'react';
 import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 
-import { makeI18n } from 'i18n/utils_next';
+import { I18nProvider } from '../context/i18n';
+
 import 'styles/globals.css';
 import 'components/AddonBadges/styles.scss';
 
@@ -14,13 +16,11 @@ function MyApp({ Component, pageProps }) {
   console.log('----- In MyApp, app: ', app);
   console.log('----- In MyApp, lang: ', lang);
 
-  // TODO: Passing {} should make it work with the default lang. We need to figure
-  // out how to get the client/server difference working for this.
-  const i18n = makeI18n({}, lang);
-  console.log('----- In MyApp, i18n: ', i18n);
-  pageProps.i18n = i18n;
-
-  return <Component {...pageProps} />;
+  return (
+    <I18nProvider lang={lang}>
+      <Component {...pageProps} />
+    </I18nProvider>
+  );
 }
 
 export default MyApp;

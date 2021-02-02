@@ -1,3 +1,8 @@
+import url from 'url';
+
+import purify from './purify';
+import log from './logger_next';
+
 /* eslint-disable react/prop-types */
 // import url from 'url';
 
@@ -301,3 +306,36 @@ export function trimAndAddProtocolToUrl(urlToCheck) {
 //   const platform = agentOsName && userAgentOSToPlatform[agentOsName];
 //   return (platform && platformFiles[platform]) || platformFiles[OS_ALL];
 // };
+
+export function getAddonURL(slug) {
+  return `/addon/${slug}/`;
+}
+
+export function sanitizeHTML(text, allowTags, _purify = purify) {
+  // TODO: Accept tags to allow and run through dom-purify.
+  return {
+    __html: _purify.sanitize(text, { ALLOWED_TAGS: allowTags }),
+  };
+}
+
+// Convert new lines to HTML breaks.
+export function nl2br(text) {
+  return (text || '').replace(/(\r\n|\r|\n)(?!<\/?(li|ul|ol)>)/g, '<br />');
+}
+
+export function isAllowedOrigin(
+  urlString,
+  { allowedOrigins = [config.get('amoCDN')] } = {},
+) {
+  let parsedURL;
+  try {
+    parsedURL = url.parse(urlString);
+  } catch (e) {
+    log.error(`invalid urlString provided to isAllowedOrigin: ${urlString}`);
+    return false;
+  }
+
+  return allowedOrigins.includes(
+    `${parsedURL.protocol || ''}//${parsedURL.host || ''}`,
+  );
+}

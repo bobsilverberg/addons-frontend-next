@@ -8,3 +8,6 @@ export const ADDON_TYPE_LANG = 'language';
 export const ADDON_TYPE_STATIC_THEME = 'statictheme';
 
 export const DEFAULT_API_PAGE_SIZE = 25;
+
+export const DEFAULT_UTM_SOURCE = 'addons.mozilla.org';
+export const DEFAULT_UTM_MEDIUM = 'referral';

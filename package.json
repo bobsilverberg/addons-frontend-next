@@ -10,8 +10,10 @@
   "dependencies": {
     "@mozilla-protocol/tokens": "^5.0.5",
     "classnames": "^2.2.6",
+    "dompurify": "^2.2.6",
     "filesize": "^6.1.0",
     "jed": "^1.1.1",
+    "jsdom": "^16.4.0",
     "moment": "^2.29.1",
     "next": "10.0.3",
     "photon-colors": "^3.3.2",

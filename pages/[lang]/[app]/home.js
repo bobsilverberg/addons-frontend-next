@@ -1,13 +1,14 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import { useI18nState } from 'context/i18n';
 import Card from 'components/Card';
 import Layout from 'components/Layout';
 import Error from 'pages/_error';
 import styles from 'styles/Home.module.css';
 
-export default function Addon({ shelfData, statusCode }) {
+export default function Home({ shelfData, statusCode }) {
   const { i18n } = useI18nState();
   console.log('----- In Home, i18n: ', i18n);
 
@@ -54,6 +55,11 @@ export default function Addon({ shelfData, statusCode }) {
     </Layout>
   );
 }
+
+Home.propTypes = {
+  shelfData: PropTypes.shape({}),
+  statusCode: PropTypes.number,
+};
 
 export async function getServerSideProps() {
   // Fetch data from external API

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useI18nState } from 'context/i18n';
-import Card from 'components/Card';
+import CardList from 'components/CardList';
 import Layout from 'components/Layout';
 import Error from 'pages/_error';
 import styles from 'styles/Home.module.css';
@@ -34,7 +34,7 @@ export default function Home({ shelfData, statusCode }) {
 
           {results.map((shelf) => {
             return (
-              <Card key={shelf.title}>
+              <CardList key={shelf.title}>
                 <div>
                   <p>{shelf.title}</p>
                   {shelf.addons.map((addon) => {
@@ -47,7 +47,7 @@ export default function Home({ shelfData, statusCode }) {
                     );
                   })}
                 </div>
-              </Card>
+              </CardList>
             );
           })}
         </main>
@@ -58,7 +58,7 @@ export default function Home({ shelfData, statusCode }) {
 
 Home.propTypes = {
   shelfData: PropTypes.shape({}),
-  statusCode: PropTypes.number,
+  statusCode: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
 };
 
 export async function getServerSideProps() {

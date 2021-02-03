@@ -4,11 +4,12 @@ import makeClassName from 'classnames';
 // import { withRouter } from 'react-router-dom';
 // import { compose } from 'redux';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 
 import {
   addQueryParams,
   getAddonURL,
-  getPromotedCategory,
+  //   getPromotedCategory,
   nl2br,
   sanitizeHTML,
 } from '../../utils';
@@ -23,11 +24,11 @@ import Icon from '../Icon';
 import LoadingText from '../LoadingText';
 // import Rating from 'amo/components/Rating';
 // import PromotedBadge from 'amo/components/PromotedBadge';
+import { useI18nState } from '../../context/i18n';
 import styles from './styles.module.scss';
-import { useI18nState } from 'context/i18n';
 
 export default function SearchResult({
-  _getPromotedCategory = getPromotedCategory,
+  //   _getPromotedCategory = getPromotedCategory,
   addon,
   addonInstallSource,
   clientApp,
@@ -35,13 +36,13 @@ export default function SearchResult({
   onClick,
   onImpression,
   showMetadata = true,
-  showPromotedBadge = true,
+  //   showPromotedBadge = true,
   showSummary = true,
   useThemePlaceholder = false,
 }) {
   const { i18n } = useI18nState();
 
-  const getAddonLink = (addon, addonInstallSource) => {
+  const getAddonLink = () => {
     let linkTo = getAddonURL(addon.slug);
 
     if (addonInstallSource) {
@@ -79,10 +80,10 @@ export default function SearchResult({
       addonTitle = (
         <Link
           className={styles['SearchResult-link']}
-          to={this.getAddonLink(addon, addonInstallSource)}
-          onClick={this.onClickAddon}
+          href={getAddonLink()}
+          onClick={onClickAddon}
         >
-          {addon.name}
+          <a>{addon.name}</a>
         </Link>
       );
     }
@@ -134,11 +135,12 @@ export default function SearchResult({
       );
     }
 
-    const promotedCategory = _getPromotedCategory({
-      addon,
-      clientApp,
-      forBadging: true,
-    });
+    // TODO: Leaving out promoted badge for now for simplicity.
+    // const promotedCategory = _getPromotedCategory({
+    //   addon,
+    //   clientApp,
+    //   forBadging: true,
+    // });
 
     return (
       <div className={styles['SearchResult-wrapper']}>
@@ -249,9 +251,9 @@ export default function SearchResult({
     // }
   };
 
-  const result = this.renderResult();
-  const resultClassnames = makeClassName('SearchResult', {
-    'SearchResult--theme': addon
+  const result = renderResult();
+  const resultClassnames = makeClassName(styles.SearchResult, {
+    [styles['SearchResult--theme']]: addon
       ? ADDON_TYPE_STATIC_THEME === addon.type
       : useThemePlaceholder,
   });
@@ -261,44 +263,24 @@ export default function SearchResult({
     // added an actual link to the h2 tag.
     // eslint-disable-next-line max-len
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events
-    <li onClick={this.onClickResult} className={resultClassnames}>
+    <li onClick={onClickResult} className={resultClassnames}>
       {result}
     </li>
   );
 }
 
-export const mapStateToProps = (state: AppState) => {
-  return {
-    clientApp: state.api.clientApp,
-    lang: state.api.lang,
-  };
+SearchResult.propTypes = {
+  //   _getPromotedCategory: PropTypes.func,
+  addon: PropTypes.object,
+  addonInstallSource: PropTypes.string,
+  clientApp: PropTypes.string,
+  lang: PropTypes.string,
+  onClick: PropTypes.func,
+  onImpression: PropTypes.func,
+  showMetadata: PropTypes.bool,
+  //   showPromotedBadge: PropTypes.bool,
+  showSummary: PropTypes.bool,
+  useThemePlaceholder: PropTypes.bool,
+  //   history: ReactRouterHistoryType,
+  //   i18n: I18nType,
 };
-
-const SearchResult: React.ComponentType<Props> = compose(
-  withRouter,
-  connect(mapStateToProps),
-  translate(),
-)(SearchResultBase);
-
-// Add proptypes
-// type Props = {|
-//     addon?: AddonType | CollectionAddonType,
-//     addonInstallSource?: string,
-//     onClick?: (addon: AddonType | CollectionAddonType) => void,
-//     onImpression?: (addon: AddonType | CollectionAddonType) => void,
-//     showMetadata?: boolean,
-//     showPromotedBadge?: boolean,
-//     showSummary?: boolean,
-//     useThemePlaceholder?: boolean,
-//   |};
-
-//   type InternalProps = {|
-//     ...Props,
-//     _getPromotedCategory: typeof getPromotedCategory,
-//     clientApp: string,
-//     history: ReactRouterHistoryType,
-//     i18n: I18nType,
-//     lang: string,
-//   |};
-
-export default SearchResult;

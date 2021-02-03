@@ -13,10 +13,10 @@ function MyApp({ Component, pageProps }) {
 
   // We can get params from the querystring
   const router = useRouter();
-  const { app, lang } = router.query;
+  const { clientApp, lang } = router.query;
 
   // We can add page props to pass into every component.
-  const props = { ...pageProps, app, lang };
+  const props = { ...pageProps, clientApp, lang };
 
   return (
     <I18nProvider lang={lang}>

@@ -1,140 +1,127 @@
 /* @flow */
 import makeClassName from 'classnames';
-// import invariant from 'invariant';
+import invariant from 'invariant';
+import PropTypes from 'prop-types';
 
 // import EditableCollectionAddon from 'amo/components/EditableCollectionAddon';
-import SearchResult from 'amo/components/SearchResult';
+import SearchResult from '../SearchResult';
 import {
   ADDON_TYPE_STATIC_THEME,
   DEFAULT_API_PAGE_SIZE,
 } from '../../constants';
 import CardList from '../CardList';
+import styles from './styles.module.scss';
 
-import './styles.scss';
+export default function AddonsCard({
+  addonInstallSource,
+  addons,
+  children,
+  className,
+  deleteNote,
+  editing = false,
+  footer,
+  footerLink,
+  footerText,
+  header,
+  loading = false,
+  removeAddon,
+  saveNote,
+  onAddonClick,
+  onAddonImpression,
+  placeholderCount = DEFAULT_API_PAGE_SIZE,
+  showMetadata,
+  showPromotedBadge = true,
+  showSummary,
+  type,
+  useThemePlaceholder = false,
+  ...otherProps
+}) {
+  const addonElements = [];
 
-type Props = {|
-  addonInstallSource?: string,
-  addons?: $ReadOnlyArray<AddonType | CollectionAddonType> | null,
-  children?: React.Node,
-  className?: string,
-  editing?: boolean,
-  loading?: boolean,
-  useThemePlaceholder?: boolean,
-  // When loading, this is the number of placeholders
-  // that will be rendered.
-  placeholderCount: number,
-  type?: 'horizontal' | 'vertical',
-  showMetadata?: boolean,
-  showPromotedBadge?: boolean,
-  showSummary?: boolean,
-
-  // These are all passed through to Card.
-  footer?: React.Node,
-  footerLink?: Object | string | null,
-  footerText?: string,
-  header?: React.Node,
-
-  // These are passed through to EditableCollectionAddon.
-  deleteNote?: DeleteAddonNoteFunc,
-  removeAddon?: RemoveCollectionAddonFunc,
-  saveNote?: SaveAddonNoteFunc,
-
-  // These are passed through to SearchResult.
-  onAddonClick?: (addon: AddonType | CollectionAddonType) => void,
-  onAddonImpression?: (addon: AddonType | CollectionAddonType) => void,
-|};
-
-export default class AddonsCard extends React.Component<Props> {
-  static defaultProps = {
-    editing: false,
-    loading: false,
-    placeholderCount: DEFAULT_API_PAGE_SIZE,
-    showPromotedBadge: true,
-    useThemePlaceholder: false,
-  };
-
-  render() {
-    const {
-      addonInstallSource,
-      addons,
-      children,
-      className,
-      deleteNote,
-      editing,
-      loading,
-      removeAddon,
-      saveNote,
-      onAddonClick,
-      onAddonImpression,
-      placeholderCount,
-      useThemePlaceholder,
-      showMetadata,
-      showPromotedBadge,
-      showSummary,
-      type,
-      ...otherProps
-    } = this.props;
-
-    const addonElements = [];
-
-    if (addons && addons.length) {
-      addons.forEach((addon) => {
-        // Because a static theme is technically an extension, it has a summary
-        // field, but we want it to look like a theme, which does not display
-        // any summary or description.
-        if (editing) {
-          invariant(deleteNote, 'deleteNote() is undefined');
-          invariant(removeAddon, 'removeAddon() is undefined');
-          invariant(saveNote, 'saveNote() is undefined');
-          addonElements.push(
-            <EditableCollectionAddon
-              addon={addon}
-              deleteNote={deleteNote}
-              key={addon.slug}
-              removeAddon={removeAddon}
-              saveNote={saveNote}
-            />,
-          );
-        } else {
-          addonElements.push(
-            <SearchResult
-              addonInstallSource={addonInstallSource}
-              addon={addon}
-              key={`${addon.slug}-${addon.type}`}
-              onClick={onAddonClick}
-              onImpression={onAddonImpression}
-              showMetadata={showMetadata}
-              showPromotedBadge={showPromotedBadge}
-              showSummary={
-                ADDON_TYPE_STATIC_THEME !== addon.type ? showSummary : false
-              }
-            />,
-          );
-        }
-      });
-    } else if (loading) {
-      for (let count = 0; count < placeholderCount; count++) {
+  if (addons && addons.length) {
+    addons.forEach((addon) => {
+      // Because a static theme is technically an extension, it has a summary
+      // field, but we want it to look like a theme, which does not display
+      // any summary or description.
+      if (editing) {
+        invariant(deleteNote, 'deleteNote() is undefined');
+        invariant(removeAddon, 'removeAddon() is undefined');
+        invariant(saveNote, 'saveNote() is undefined');
+        // addonElements.push(
+        //   <EditableCollectionAddon
+        //     addon={addon}
+        //     deleteNote={deleteNote}
+        //     key={addon.slug}
+        //     removeAddon={removeAddon}
+        //     saveNote={saveNote}
+        //   />,
+        // );
+      } else {
         addonElements.push(
           <SearchResult
-            key={count}
-            useThemePlaceholder={useThemePlaceholder}
+            addonInstallSource={addonInstallSource}
+            addon={addon}
+            key={`${addon.slug}-${addon.type}`}
+            onClick={onAddonClick}
+            onImpression={onAddonImpression}
+            showMetadata={showMetadata}
+            showPromotedBadge={showPromotedBadge}
+            showSummary={
+              ADDON_TYPE_STATIC_THEME !== addon.type ? showSummary : false
+            }
           />,
         );
       }
+    });
+  } else if (loading) {
+    for (let count = 0; count < placeholderCount; count++) {
+      addonElements.push(
+        <SearchResult key={count} useThemePlaceholder={useThemePlaceholder} />,
+      );
     }
-
-    const allClassNames = makeClassName(
-      'AddonsCard',
-      className,
-      type && `AddonsCard--${type}`,
-    );
-    return (
-      <CardList {...otherProps} className={allClassNames}>
-        {children}
-        {addonElements.length ? (
-          <ul className="AddonsCard-list">{addonElements}</ul>
-        ) : null}
-      </CardList>
-    );
   }
+
+  const allClassNames = makeClassName(
+    styles.AddonsCard,
+    className,
+    type && styles[`AddonsCard--${type}`],
+  );
+  return (
+    <CardList {...otherProps} className={allClassNames}>
+      {children}
+      {addonElements.length ? (
+        <ul className={styles['AddonsCard-list']}>{addonElements}</ul>
+      ) : null}
+    </CardList>
+  );
 }
+
+// Add propTypes
+AddonsCard.propTypes = {
+  addonInstallSource: PropTypes.string,
+  addons: PropTypes.array,
+  children: PropTypes.node,
+  className: PropTypes.string,
+  editing: PropTypes.bool,
+  loading: PropTypes.bool,
+  useThemePlaceholder: PropTypes.bool,
+  // When loading, this is the number of placeholders
+  // that will be rendered.
+  placeholderCount: PropTypes.number,
+  type: PropTypes.string,
+  showMetadata: PropTypes.bool,
+  showPromotedBadge: PropTypes.bool,
+  showSummary: PropTypes.bool,
+  // These are all passed through to Card.
+  footer: PropTypes.node,
+  footerLink: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  footerText: PropTypes.string,
+  header: PropTypes.node,
+  // These are passed through to EditableCollectionAddon.
+  deleteNote: PropTypes.func,
+  removeAddon: PropTypes.func,
+  saveNote: PropTypes.func,
+  // These are passed through to SearchResult.
+  onAddonClick: PropTypes.func,
+  onAddonImpression: PropTypes.func,
+};

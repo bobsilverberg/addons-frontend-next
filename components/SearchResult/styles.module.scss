@@ -133,14 +133,14 @@ $icon-default-size: 32px;
     margin-top: 6px;
   }
 
-  @include respond-to(extraLarge) {
-    flex-direction: row;
-    margin-top: 0;
+  // @include respond-to(extraLarge) {
+  //   flex-direction: row;
+  //   margin-top: 0;
 
-    .PromotedBadge {
-      margin-top: 0;
-    }
-  }
+  //   .PromotedBadge {
+  //     margin-top: 0;
+  //   }
+  // }
 
   .LoadingText {
     margin-bottom: 5px;

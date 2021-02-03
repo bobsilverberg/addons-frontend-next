@@ -1,5 +1,5 @@
-import createDOMPurify from 'dompurify';
+// import createDOMPurify from 'dompurify';
 
-import universalWindow from './window';
+// import universalWindow from './window';
 
-export default createDOMPurify(universalWindow);
+// export default createDOMPurify(universalWindow);

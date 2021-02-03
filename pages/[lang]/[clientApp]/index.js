@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useI18nState } from 'context/i18n';
+import AddonsCard from 'components/AddonsCard';
 import CardList from 'components/CardList';
 import Layout from 'components/Layout';
 import Error from 'pages/_error';
@@ -34,6 +35,7 @@ export default function Home({ shelfData, statusCode }) {
 
           {results.map((shelf) => {
             return (
+              // <AddonsCard addons={shelf.addons} key={shelf.title} />
               <CardList key={shelf.title}>
                 <div>
                   <p>{shelf.title}</p>

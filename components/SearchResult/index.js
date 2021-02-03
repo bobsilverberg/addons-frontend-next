@@ -125,7 +125,8 @@ export default function SearchResult({
     if (showSummary) {
       const summaryProps = {};
       if (addon) {
-        summaryProps.dangerouslySetInnerHTML = sanitizeHTML(addon.summary);
+        // summaryProps.dangerouslySetInnerHTML = sanitizeHTML(addon.summary);
+        summaryProps.dangerouslySetInnerHTML = addon.summary;
       } else {
         summaryProps.children = <LoadingText />;
       }
@@ -196,9 +197,8 @@ export default function SearchResult({
                 <p
                   className={styles['SearchResult-note-content']}
                   // eslint-disable-next-line react/no-danger
-                  dangerouslySetInnerHTML={sanitizeHTML(nl2br(addon.notes), [
-                    'br',
-                  ])}
+                  //   dangerouslySetInnerHTML={sanitizeHTML(nl2br(addon.notes), [
+                  dangerouslySetInnerHTML={nl2br(addon.notes)}
                 />
               </div>
             )}

@@ -1,21 +1,21 @@
-export const addonsServerDevCDN = 'https://addons-dev-cdn.allizom.org';
-export const addonsServerProdCDN = 'https://addons.cdn.mozilla.net';
-export const addonsServerStageCDN = 'https://addons-stage-cdn.allizom.org';
+const addonsServerDevCDN = 'https://addons-dev-cdn.allizom.org';
+const addonsServerProdCDN = 'https://addons.cdn.mozilla.net';
+const addonsServerStageCDN = 'https://addons-stage-cdn.allizom.org';
 
-export const devDomain = 'addons-dev.allizom.org';
-export const prodDomain = 'addons.mozilla.org';
-export const stageDomain = 'addons.allizom.org';
+const devDomain = 'addons-dev.allizom.org';
+const prodDomain = 'addons.mozilla.org';
+const stageDomain = 'addons.allizom.org';
 
-export const apiDevHost = `https://${devDomain}`;
-export const apiProdHost = `https://${prodDomain}`;
-export const apiStageHost = `https://${stageDomain}`;
+const apiDevHost = `https://${devDomain}`;
+const apiProdHost = `https://${prodDomain}`;
+const apiStageHost = `https://${stageDomain}`;
 
-export const baseUrlDev = apiDevHost;
-export const baseUrlProd = apiProdHost;
-export const baseUrlStage = apiStageHost;
+const baseUrlDev = apiDevHost;
+const baseUrlProd = apiProdHost;
+const baseUrlStage = apiStageHost;
 
-export const sentryHost = 'https://sentry.prod.mozaws.net';
-export const analyticsHost = 'https://www.google-analytics.com';
+const sentryHost = 'https://sentry.prod.mozaws.net';
+const analyticsHost = 'https://www.google-analytics.com';
 
 const addonsFrontendCDN = 'https://addons-amo.cdn.mozilla.net';
 

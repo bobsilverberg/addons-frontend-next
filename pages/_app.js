@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 
 import { I18nProvider } from '../context/i18n';
-import { UserContextProvider } from '../context/user';
+import { SiteProvider } from '../context/site';
+import { UserProvider } from '../context/user';
 
 import 'styles/globals.css';
 import 'components/AddonBadges/styles.scss';
@@ -20,11 +21,13 @@ function MyApp({ Component, pageProps }) {
   const props = { ...pageProps, clientApp, lang };
 
   return (
-    <UserContextProvider>
-      <I18nProvider lang={lang}>
-        <Component {...props} />
-      </I18nProvider>
-    </UserContextProvider>
+    <SiteProvider>
+      <UserProvider>
+        <I18nProvider lang={lang}>
+          <Component {...props} />
+        </I18nProvider>
+      </UserProvider>
+    </SiteProvider>
   );
 }
 

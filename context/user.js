@@ -47,7 +47,7 @@ const reducer = (state, action) => {
   }
 };
 
-export function UserContextProvider({ children }) {
+export function UserProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
@@ -59,4 +59,4 @@ export function UserContextProvider({ children }) {
 
 export const useUserContext = () => useContext(UserContext);
 
-export default UserContextProvider;
+export default UserProvider;

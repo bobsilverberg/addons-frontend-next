@@ -1,4 +1,5 @@
 import { oneLine } from 'common-tags';
+
 import {
   ADDON_TYPE_EXTENSION,
   CLIENT_APP_ANDROID,
@@ -6,6 +7,7 @@ import {
   USER_AGENT_OS_IOS,
 } from '../constants';
 import log from './logger_next';
+
 import { configGetPulic as defaultConfigGetPulic } from '.';
 
 export const operatingSystems = {

@@ -1,0 +1,32 @@
+@import '../../styles/amo/styles.scss';
+
+.Page-amo {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.Page-content {
+  background: $background-grey;
+  flex-grow: 1;
+  padding: 0 0 $padding-page;
+
+  // @include respond-to(large) {
+  //   padding: 0 0 $padding-page-l;
+  // }
+}
+
+.Page {
+  margin: 0 auto;
+}
+
+.Page-no-hero-promo,
+.Page-not-homepage {
+  max-width: $max-content-width;
+}
+
+// This ugly temporary hack fixes the padding for the error message on the
+// home page when there is no hero promo.
+// .Page-no-hero-promo:not(.Page-not-homepage) .ErrorList {
+//   padding: 0 24px;
+// }

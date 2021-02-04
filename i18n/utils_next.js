@@ -5,33 +5,20 @@ import Jed from 'jed';
 import moment from 'moment';
 import getConfig from 'next/config';
 
-import log from 'utils/logger_next';
+import { configGetPulic } from '../utils';
+import log from '../utils/logger_next';
 // import log from 'core/logger';
 // import { RTL, LTR } from 'core/constants';
 // import type { I18nType } from 'core/types/i18n';
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
-const configGet = (key) => {
-  if (key in publicRuntimeConfig) {
-    return publicRuntimeConfig[key];
-  }
-  return undefined;
-};
+const defaultLang = configGetPulic('defaultLang');
+const langs = configGetPulic('langs');
+const langMap = configGetPulic('langMap');
 
-const defaultLang = configGet('defaultLang');
-const langs = configGet('langs');
-const langMap = configGet('langMap');
-
-// console.log(
-//   '--- in utils_next, defaultLang, langs, langMap :',
-//   defaultLang,
-//   langs,
-//   langMap,
-// );
 // The full list of supported langs including those that
 // will be mapped by sanitizeLanguage.
 const supportedLangs = langs.concat(Object.keys(langMap));
-const rtlLangs = configGet('rtlLangs');
+const rtlLangs = configGetPulic('rtlLangs');
 
 // export function localeToLang(locale?: any, log_?: typeof log = log) {
 //   let lang;

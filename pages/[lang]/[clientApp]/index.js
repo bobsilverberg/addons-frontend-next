@@ -1,21 +1,17 @@
 import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useI18nState } from 'context/i18n';
 import LandingAddonsCard from 'components/LandingAddonsCard';
+import Page from 'components/Page';
 import Layout from 'components/Layout';
+import { CLIENT_APP_FIREFOX } from '../../../constants';
 import Error from 'pages/_error';
 import { createInternalShelf } from 'utils/addons';
 import styles from 'styles/Home.module.css';
 
-export default function Home({ shelfData, statusCode }) {
+export default function Home({ clientApp, shelfData, statusCode }) {
   const { i18n } = useI18nState();
-  console.log('----- In Home, i18n: ', i18n);
-
-  console.log('----- In Home, statusCode: ', statusCode);
-  const router = useRouter();
-  const { app, lang } = router.query;
+  const isDesktopSite = clientApp === CLIENT_APP_FIREFOX;
 
   if (statusCode) {
     return <Error statusCode={statusCode} />;
@@ -23,23 +19,30 @@ export default function Home({ shelfData, statusCode }) {
 
   const { shelves } = shelfData;
   return (
-    <Layout title="Add-ons Home Page">
+    <Layout title={i18n.gettext('Add-ons Home Page')}>
       <div className={styles.container}>
         <Head>
-          <title>Add-ons Home Page</title>
+          <title>{i18n.gettext('Add-ons Home Page')}</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
         <main className={styles.main}>
-          <h1 className={styles.title}>Add-ons Home Page</h1>
+          <Page isHomePage showWrongPlatformWarning={!isDesktopSite}>
+            <div className="Home">
+              <h1 className={styles.title}>Add-ons Home Page</h1>
 
-          {shelves.map((shelf) => {
-            return (
-              <>
-                <LandingAddonsCard addons={shelf.addons} key={shelf.title} />
-              </>
-            );
-          })}
+              {shelves.map((shelf) => {
+                return (
+                  <>
+                    <LandingAddonsCard
+                      addons={shelf.addons}
+                      key={shelf.title}
+                    />
+                  </>
+                );
+              })}
+            </div>
+          </Page>
         </main>
       </div>
     </Layout>
@@ -47,7 +50,8 @@ export default function Home({ shelfData, statusCode }) {
 }
 
 Home.propTypes = {
-  shelfData: PropTypes.shape({}),
+  clientApp: PropTypes.string,
+  shelfData: PropTypes.object,
   statusCode: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
 };
 

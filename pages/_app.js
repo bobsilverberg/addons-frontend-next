@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 
 import { I18nProvider } from '../context/i18n';
+import { UserContextProvider } from '../context/user';
 
 import 'styles/globals.css';
 import 'components/AddonBadges/styles.scss';
@@ -19,9 +20,11 @@ function MyApp({ Component, pageProps }) {
   const props = { ...pageProps, clientApp, lang };
 
   return (
-    <I18nProvider lang={lang}>
-      <Component {...props} />
-    </I18nProvider>
+    <UserContextProvider>
+      <I18nProvider lang={lang}>
+        <Component {...props} />
+      </I18nProvider>
+    </UserContextProvider>
   );
 }
 

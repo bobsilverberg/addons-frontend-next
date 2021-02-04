@@ -1,7 +1,7 @@
 import makeClassName from 'classnames';
 import PropTypes from 'prop-types';
 
-// import AppBanner from 'amo/components/AppBanner';
+import AppBanner from '../AppBanner';
 // import NotFound from 'amo/components/Errors/NotFound';
 // import UnavailableForLegalReasons from 'amo/components/Errors/UnavailableForLegalReasons';
 // import Footer from 'amo/components/Footer';
@@ -62,6 +62,7 @@ export default function Page({
             // Exclude the AppBanner from the home page, but include it on the
             // Android home page.
             // (!isHomePage || clientApp === CLIENT_APP_ANDROID) && <AppBanner />
+            <AppBanner />
           }
           {/* {showWrongPlatformWarning && (
             <WrongPlatformWarning isHomePage={isHomePage} />

@@ -97,11 +97,10 @@ import { BADGE_CATEGORIES, SPONSORED, VERIFIED } from '../constants';
 // }
 
 // export function sanitizeHTML(text, allowTags = [], _purify = purify) {
-//   // TODO: Accept tags to allow and run through dom-purify.
-//   return {
-//     __html: _purify.sanitize(text, { ALLOWED_TAGS: allowTags }),
-//   };
-// }
+export function sanitizeHTML(text, allowTags = []) {
+  // TODO: Accept tags to allow and run through dom-purify.
+  return { __html: text };
+}
 
 // // Convert new lines to HTML breaks.
 // export function nl2br(text) {

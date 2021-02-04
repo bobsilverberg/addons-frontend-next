@@ -1,7 +1,11 @@
 export const LANDING_PAGE_EXTENSION_COUNT = 4;
 export const LANDING_PAGE_THEME_COUNT = 3;
 
-// Add-on types.
+// Client App types
+export const CLIENT_APP_ANDROID = 'android';
+export const CLIENT_APP_FIREFOX = 'firefox';
+
+// Add-on types
 export const ADDON_TYPE_DICT = 'dictionary';
 export const ADDON_TYPE_EXTENSION = 'extension';
 export const ADDON_TYPE_LANG = 'language';
@@ -36,3 +40,5 @@ export const EXCLUDE_WARNING_CATEGORIES = [
   SPOTLIGHT,
   VERIFIED,
 ];
+
+export const USER_AGENT_OS_IOS = 'iOS';

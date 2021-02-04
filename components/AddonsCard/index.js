@@ -97,7 +97,6 @@ export default function AddonsCard({
   );
 }
 
-// Add propTypes
 AddonsCard.propTypes = {
   addonInstallSource: PropTypes.string,
   addons: PropTypes.array,

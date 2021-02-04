@@ -311,7 +311,7 @@ export function trimAndAddProtocolToUrl(urlToCheck) {
 //   return (platform && platformFiles[platform]) || platformFiles[OS_ALL];
 // };
 
-const configGetPulic = (key) => {
+export const configGetPulic = (key) => {
   const { publicRuntimeConfig } = getConfig();
   if (key in publicRuntimeConfig) {
     return publicRuntimeConfig[key];

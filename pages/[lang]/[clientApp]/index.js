@@ -3,8 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useI18nState } from 'context/i18n';
-import AddonsCard from 'components/AddonsCard';
-import CardList from 'components/CardList';
+import LandingAddonsCard from 'components/LandingAddonsCard';
 import Layout from 'components/Layout';
 import Error from 'pages/_error';
 import { createInternalShelf } from 'utils/addons';
@@ -37,7 +36,7 @@ export default function Home({ shelfData, statusCode }) {
           {shelves.map((shelf) => {
             return (
               <>
-                <AddonsCard addons={shelf.addons} key={shelf.title} />
+                <LandingAddonsCard addons={shelf.addons} key={shelf.title} />
               </>
             );
           })}

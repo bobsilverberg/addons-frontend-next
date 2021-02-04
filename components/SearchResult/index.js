@@ -126,7 +126,7 @@ export default function SearchResult({
       const summaryProps = {};
       if (addon) {
         // summaryProps.dangerouslySetInnerHTML = sanitizeHTML(addon.summary);
-        summaryProps.dangerouslySetInnerHTML = addon.summary;
+        summaryProps.dangerouslySetInnerHTML = { __html: addon.summary };
       } else {
         summaryProps.children = <LoadingText />;
       }

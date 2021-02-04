@@ -1,5 +1,6 @@
 import url from 'url';
 
+import invariant from 'invariant';
 import getConfig from 'next/config';
 
 // import purify from './purify';
@@ -405,3 +406,16 @@ export function addQueryParams(urlString, queryParams = {}) {
 
   return url.format(urlObj);
 }
+
+export const selectLocalizedContent = (field, lang) => {
+  invariant(lang, 'lang must not be empty');
+  if (!field) {
+    return null;
+  }
+
+  if (!field[lang]) {
+    return field[field._default];
+  }
+
+  return field[lang];
+};

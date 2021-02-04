@@ -39,6 +39,7 @@ export default function AddonsCard({
   const addonElements = [];
 
   if (addons && addons.length) {
+    console.log('----- in AddonsCard, addons: ', addons);
     addons.forEach((addon) => {
       // Because a static theme is technically an extension, it has a summary
       // field, but we want it to look like a theme, which does not display

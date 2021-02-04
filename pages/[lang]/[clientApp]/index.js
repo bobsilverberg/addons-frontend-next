@@ -7,6 +7,7 @@ import AddonsCard from 'components/AddonsCard';
 import CardList from 'components/CardList';
 import Layout from 'components/Layout';
 import Error from 'pages/_error';
+import { createInternalShelf } from 'utils/addons';
 import styles from 'styles/Home.module.css';
 
 export default function Home({ shelfData, statusCode }) {
@@ -21,7 +22,7 @@ export default function Home({ shelfData, statusCode }) {
     return <Error statusCode={statusCode} />;
   }
 
-  const { results } = shelfData;
+  const { shelves } = shelfData;
   return (
     <Layout title="Add-ons Home Page">
       <div className={styles.container}>
@@ -33,23 +34,11 @@ export default function Home({ shelfData, statusCode }) {
         <main className={styles.main}>
           <h1 className={styles.title}>Add-ons Home Page</h1>
 
-          {results.map((shelf) => {
+          {shelves.map((shelf) => {
             return (
-              // <AddonsCard addons={shelf.addons} key={shelf.title} />
-              <CardList key={shelf.title}>
-                <div>
-                  <p>{shelf.title}</p>
-                  {shelf.addons.map((addon) => {
-                    return (
-                      <p key={addon.id}>
-                        <Link href={`/${lang}/${app}/addon/${addon.slug}`}>
-                          <a>{addon.slug}</a>
-                        </Link>
-                      </p>
-                    );
-                  })}
-                </div>
-              </CardList>
+              <>
+                <AddonsCard addons={shelf.addons} key={shelf.title} />
+              </>
             );
           })}
         </main>
@@ -63,12 +52,22 @@ Home.propTypes = {
   statusCode: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
 };
 
-export async function getServerSideProps() {
-  // Fetch data from external API
-  const res = await fetch(`	https://addons-dev.allizom.org/api/v5/shelves/`);
+export async function getServerSideProps(context) {
+  const { lang } = context.params;
+  const res = await fetch(
+    `	https://addons-dev.allizom.org/api/v5/shelves/?lang=${lang}`,
+  );
   const statusCode = res.status > 200 ? res.status : false;
   const data = await res.json();
 
+  // We need to covert the data somewhere. I guess we can do it here, for now.
+  const { primary, secondary, results } = data;
+  const shelfData = {
+    primary,
+    secondary,
+    shelves: results.map((shelf) => createInternalShelf(shelf, lang)),
+  };
+
   // Pass data to the page via props
-  return { props: { shelfData: data, statusCode } };
+  return { props: { shelfData, statusCode } };
 }

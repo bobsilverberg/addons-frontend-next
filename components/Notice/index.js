@@ -6,13 +6,13 @@ import Button from 'amo/components/Button';
 import IconXMark from 'amo/components/IconXMark';
 import styles from './styles.module.scss';
 
-export const errorType: 'error' = 'error';
-export const genericType: 'generic' = 'generic';
-export const genericWarningType: 'genericWarning' = 'genericWarning';
-export const firefoxRequiredType: 'firefox' = 'firefox';
-export const successType: 'success' = 'success';
-export const warningInfoType: 'warningInfo' = 'warningInfo';
-export const warningType: 'warning' = 'warning';
+export const errorType = 'error';
+export const genericType = 'generic';
+export const genericWarningType = 'genericWarning';
+export const firefoxRequiredType = 'firefox';
+export const successType = 'success';
+export const warningInfoType = 'warningInfo';
+export const warningType = 'warning';
 
 const validTypes = [
   errorType,

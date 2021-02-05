@@ -15,12 +15,12 @@ function MyApp({ Component, pageProps, siteData }) {
 
   // We can get params from the querystring
   const router = useRouter();
-  const { clientApp, lang } = router.query;
+  const { lang } = router.query;
 
   console.log('----- siteData: ', siteData);
 
   // We can add page props to pass into every component.
-  const props = { ...pageProps, clientApp, lang };
+  const props = { ...pageProps, siteData };
 
   return (
     <SiteProvider>
@@ -34,17 +34,21 @@ function MyApp({ Component, pageProps, siteData }) {
 }
 
 MyApp.propTypes = {
-  pageProps: PropTypes.shape({}),
   Component: PropTypes.elementType,
+  pageProps: PropTypes.shape({}),
+  siteData: PropTypes.object,
 };
 
-MyApp.getServerSideProps = async () => {
+MyApp.getInitialProps = async (ctx) => {
+  console.log('---- in MyApp.getInitialProps, ctx: ', ctx);
+  console.log('---- about to fetch site data...');
   const res = await fetch(`	https://addons-dev.allizom.org/api/v5/site/`);
+  console.log('---- got site data: ', res);
   const statusCode = res.status > 200 ? res.status : false;
   const data = await res.json();
 
   // Pass data to the page via props
-  return { props: { siteData: data, statusCode } };
+  return { siteData: data, statusCode };
 };
 
 export default MyApp;

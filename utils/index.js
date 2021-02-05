@@ -318,8 +318,8 @@ export const configGetPulic = (key) => {
   return undefined;
 };
 
-export function getAddonURL(slug) {
-  return `/addon/${slug}/`;
+export function getAddonURL({ clientApp, lang, slug }) {
+  return `/${lang}/${clientApp}/addon/${slug}/`;
 }
 
 // export function sanitizeHTML(text, allowTags, _purify = purify) {

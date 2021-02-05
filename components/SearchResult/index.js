@@ -24,8 +24,8 @@ import Icon from '../Icon';
 import LoadingText from '../LoadingText';
 // import Rating from 'amo/components/Rating';
 // import PromotedBadge from 'amo/components/PromotedBadge';
+import { useGlobalState } from '../../context/global';
 import { useI18nState } from '../../context/i18n';
-import { useSiteState } from '../../context/site';
 import styles from './styles.module.scss';
 
 export default function SearchResult({
@@ -40,7 +40,7 @@ export default function SearchResult({
   useThemePlaceholder = false,
 }) {
   const { i18n } = useI18nState();
-  const { clientApp, lang } = useSiteState();
+  const { clientApp, lang } = useGlobalState();
 
   const getAddonLink = () => {
     console.log('---- in getAddonLink, clientApp: ', clientApp);

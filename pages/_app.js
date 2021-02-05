@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 // import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 
+import { GlobalProvider } from '../context/global';
 import { I18nProvider } from '../context/i18n';
 import { SiteProvider } from '../context/site';
 import { UserProvider } from '../context/user';
@@ -23,13 +24,15 @@ function MyApp({ Component, pageProps, siteData }) {
   const props = { ...pageProps, siteData };
 
   return (
-    <SiteProvider>
-      <UserProvider>
-        <I18nProvider lang={lang}>
-          <Component {...props} />
-        </I18nProvider>
-      </UserProvider>
-    </SiteProvider>
+    <GlobalProvider>
+      <SiteProvider>
+        <UserProvider>
+          <I18nProvider lang={lang}>
+            <Component {...props} />
+          </I18nProvider>
+        </UserProvider>
+      </SiteProvider>
+    </GlobalProvider>
   );
 }
 

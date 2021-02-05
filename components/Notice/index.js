@@ -2,8 +2,8 @@ import invariant from 'invariant';
 import makeClassName from 'classnames';
 
 import withUIState from 'amo/withUIState';
-import Button from 'amo/components/Button';
-import IconXMark from 'amo/components/IconXMark';
+import Button from '../Button';
+import IconXMark from '../IconXMark';
 import styles from './styles.module.scss';
 
 export const errorType = 'error';

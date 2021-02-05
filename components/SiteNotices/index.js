@@ -1,11 +1,25 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import useSWR from 'swr';
 
 import { useI18nState } from '../../context/i18n';
-import { useSiteState } from '../../context/site';
+// import { useSiteState } from '../../context/site';
 import { LOG_IN_USER, LOG_OUT_USER, useUserContext } from '../../context/user';
 import { sanitizeHTML, nl2br } from '../../utils';
 // import Notice from './Notice';
 import styles from './styles.module.scss';
+
+function useSiteData() {
+  const { data, error } = useSWR(
+    `https://addons-dev.allizom.org/api/v5/site/`,
+    // fetcher
+  );
+
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
 
 // This is needed because of https://github.com/mozilla/addons-frontend/issues/8616
 //
@@ -16,13 +30,15 @@ const sanitizeNoticeHTML = (text) => {
   return sanitizeHTML(nl2br(text), ['a', 'b', 'br', 'em', 'i', 'strong']);
 };
 
-export default function SiteNotices({ siteIsReadOnly, siteNotice }) {
+export default function SiteNotices() {
   const { i18n } = useI18nState();
-  const { notice, readOnly } = useSiteState();
+  const { data } = useSiteData();
+  const { notice, readOnly } = data || {};
   const { dispatch, state: userState } = useUserContext();
   const { currentUserWasLoggedOut } = userState;
   const notices = [];
-
+  console.log('----- in SiteNotices, notice: ', notice);
+  console.log('----- in SiteNotices, readOnly: ', readOnly);
   if (notice) {
     notices.push(
       <Notice
@@ -33,7 +49,7 @@ export default function SiteNotices({ siteIsReadOnly, siteNotice }) {
       >
         <span
           // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={sanitizeNoticeHTML(siteNotice)}
+          dangerouslySetInnerHTML={sanitizeNoticeHTML(notice)}
         />
       </Notice>,
     );
@@ -87,8 +103,3 @@ export default function SiteNotices({ siteIsReadOnly, siteNotice }) {
     </>
   );
 }
-
-SiteNotices.propTypes = {
-  siteIsReadOnly: PropTypes.bool,
-  siteNotice: PropTypes.string,
-};

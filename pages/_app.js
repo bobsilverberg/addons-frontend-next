@@ -39,16 +39,4 @@ MyApp.propTypes = {
   siteData: PropTypes.object,
 };
 
-MyApp.getInitialProps = async (ctx) => {
-  console.log('---- in MyApp.getInitialProps, ctx: ', ctx);
-  console.log('---- about to fetch site data...');
-  const res = await fetch(`	https://addons-dev.allizom.org/api/v5/site/`);
-  console.log('---- got site data: ', res);
-  const statusCode = res.status > 200 ? res.status : false;
-  const data = await res.json();
-
-  // Pass data to the page via props
-  return { siteData: data, statusCode };
-};
-
 export default MyApp;

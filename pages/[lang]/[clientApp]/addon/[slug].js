@@ -4,6 +4,7 @@ import useSWR from 'swr';
 
 import { useI18nState } from 'context/i18n';
 import Layout from 'components/Layout';
+import Page from 'components/Page';
 import Error from 'pages/_error';
 // import AddonBadges from 'components/AddonBadges';
 import styles from 'styles/Home.module.css';
@@ -49,15 +50,17 @@ export default function Addon({ aProp, addonData, statusCode }) {
         </Head>
 
         <main className={styles.main}>
-          <h1 className={styles.title}>Addon Detail Page</h1>
-          <div>
-            Rating:
-            {isError ? <div>failed to load</div> : null}
-            {isLoading ? <div>oading...</div> : null}
-            {ratings ? ratings.grouped_ratings[1] : null}
-          </div>
+          <Page showWrongPlatformWarning={false}>
+            <h1 className={styles.title}>Addon Detail Page</h1>
+            <div>
+              Rating:
+              {isError ? <div>failed to load</div> : null}
+              {isLoading ? <div>oading...</div> : null}
+              {ratings ? ratings.grouped_ratings[1] : null}
+            </div>
 
-          {/* <AddonMoreInfo addon={addonData} i18n={i18n} /> */}
+            {/* <AddonMoreInfo addon={addonData} i18n={i18n} /> */}
+          </Page>
         </main>
       </div>
     </Layout>

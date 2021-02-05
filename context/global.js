@@ -16,7 +16,7 @@ export function GlobalProvider({ children }) {
   };
 
   return (
-    <GlobalProvider.Provider value={state}>{children}</GlobalProvider.Provider>
+    <GlobalContext.Provider value={state}>{children}</GlobalContext.Provider>
   );
 }
 

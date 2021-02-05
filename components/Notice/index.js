@@ -1,7 +1,9 @@
-import invariant from 'invariant';
 import makeClassName from 'classnames';
+import invariant from 'invariant';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 
-import withUIState from 'amo/withUIState';
+import { useI18nState } from '../../context/i18n';
 import Button from '../Button';
 import IconXMark from '../IconXMark';
 import styles from './styles.module.scss';
@@ -24,60 +26,12 @@ const validTypes = [
   warningType,
 ];
 
-type UIState = {|
-  wasDismissed: boolean,
-|};
-
-export type NoticeType =
-  | typeof errorType
-  | typeof firefoxRequiredType
-  | typeof genericType
-  | typeof genericWarningType
-  | typeof successType
-  | typeof warningInfoType
-  | typeof warningType;
-
-type Props = {|
-  actionHref?: string,
-  actionOnClick?: Function,
-  // This will be passed to Button and then <a>, e.g. target=_blank
-  actionTarget?: string,
-  actionText?: string,
-  actionTo?: string | Object,
-  // This declares that the Notice component will be rendered against
-  // a $grey-20 background.
-  againstGrey20?: boolean,
-  children?: React.Node,
-  className?: string,
-  dismissible?: boolean,
-  id?: string,
-  light?: boolean,
-  onDismiss?: (SyntheticEvent<any>) => void,
-  type: NoticeType,
-|};
-
-type InternalProps = {|
-  ...Props,
-  i18n: I18nType,
-  setUIState: (state: $Shape<UIState>) => void,
-  uiState: UIState,
-|};
-
 /*
  * A Photon style notification bar.
  *
  * See https://design.firefox.com/photon/components/message-bars.html
  */
-export class NoticeBase extends React.Component<InternalProps> {
-  onDismissNotice = (event: SyntheticEvent<any>) => {
-    this.props.setUIState({ wasDismissed: true });
-    if (this.props.onDismiss) {
-      this.props.onDismiss(event);
-    }
-  };
-
-  render() {
-    const {
+export default function Notice({
       actionHref,
       actionOnClick,
       actionTarget,
@@ -87,14 +41,22 @@ export class NoticeBase extends React.Component<InternalProps> {
       children,
       className,
       dismissible,
-      i18n,
       light,
+  onDismiss,
       type,
-      uiState,
-    } = this.props;
+}) {
     invariant(validTypes.includes(type), `Unknown type: ${type}`);
+  const { i18n } = useI18nState();
+  const [wasDismissed, setWasDismissed] = useState(false);
 
-    if (dismissible && uiState.wasDismissed) {
+  const onDismissNotice = (event) => {
+    setWasDismissed(true);
+    if (onDismiss) {
+      onDismiss(event);
+    }
+  };
+
+  if (dismissible && wasDismissed) {
       return null;
     }
 
@@ -112,7 +74,7 @@ export class NoticeBase extends React.Component<InternalProps> {
       );
       actionButton = (
         <Button
-          className="Notice-button"
+        className={styles['Notice-button']}
           micro
           target={actionTarget}
           {...buttonProps}
@@ -122,28 +84,33 @@ export class NoticeBase extends React.Component<InternalProps> {
       );
     }
 
-    const finalClass = makeClassName('Notice', `Notice-${type}`, className, {
-      'Notice-againstGrey20': againstGrey20,
-      'Notice-dismissible': dismissible,
-      'Notice-light': light,
-    });
+  const finalClass = makeClassName(
+    styles.Notice,
+    styles[`Notice-${type}`],
+    styles[className],
+    {
+      [styles['Notice-againstGrey20']]: againstGrey20,
+      [styles['Notice-dismissible']]: dismissible,
+      [styles['Notice-light']]: light,
+    },
+  );
     return (
       <div className={finalClass}>
-        <div className="Notice-icon" />
-        <div className="Notice-column">
-          <div className="Notice-content">
-            <p className="Notice-text">{children}</p>
+      <div className={styles['Notice-icon']} />
+      <div className={styles['Notice-column']}>
+        <div className={styles['Notice-content']}>
+          <p className={styles['Notice-text']}>{children}</p>
             {actionButton}
           </div>
         </div>
         {dismissible && (
-          <div className="Notice-dismisser">
+        <div className={styles['Notice-dismisser']}>
             <Button
-              className="Notice-dismisser-button"
-              onClick={this.onDismissNotice}
+            className={styles['Notice-dismisser-button']}
+            onClick={onDismissNotice}
             >
               <IconXMark
-                className="Notice-dismisser-icon"
+              className={styles['Notice-dismisser-icon']}
                 alt={i18n.gettext('Dismiss this notice')}
               />
             </Button>
@@ -152,29 +119,22 @@ export class NoticeBase extends React.Component<InternalProps> {
       </div>
     );
   }
-}
 
-const extractId = (props: Props) => {
-  if (props.dismissible) {
-    invariant(
-      props.id,
-      'When dismissible=true, the id property must be defined',
-    );
-  }
-  return props.id || '';
+Notice.propTypes = {
+  actionHref: PropTypes.string,
+  actionOnClick: PropTypes.func,
+  // This will be passed to Button and then <a>, e.g. target=_blank
+  actionTarget: PropTypes.string,
+  actionText: PropTypes.string,
+  actionTo: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  // This declares that the Notice component will be rendered against
+  // a $grey-20 background.
+  againstGrey20: PropTypes.bool,
+  children: PropTypes.node,
+  className: PropTypes.string,
+  dismissible: PropTypes.bool,
+  id: PropTypes.string,
+  light: PropTypes.bool,
+  onDismiss: PropTypes.func,
+  type: PropTypes.string,
 };
-
-const initialState: UIState = {
-  wasDismissed: false,
-};
-
-const Notice: React.ComponentType<Props> = compose(
-  withUIState({
-    fileName: __filename,
-    extractId,
-    initialState,
-  }),
-  translate(),
-)(NoticeBase);
-
-export default Notice;

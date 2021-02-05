@@ -1,6 +1,5 @@
 @import '../../styles/amo/styles.scss';
-
-$default-icon-size: 16px;
+@import 'vars.scss';
 
 @mixin icon($name) {
   background: url('./img/#{$name}.svg') center no-repeat;

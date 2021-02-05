@@ -2,24 +2,24 @@
 import useSWR from 'swr';
 
 import { useI18nState } from '../../context/i18n';
-// import { useSiteState } from '../../context/site';
+import { useSiteState } from '../../context/site';
 import { LOG_IN_USER, LOG_OUT_USER, useUserContext } from '../../context/user';
 import { sanitizeHTML, nl2br } from '../../utils';
-// import Notice from './Notice';
+import Notice from '../Notice';
 import styles from './styles.module.scss';
 
-function useSiteData() {
-  const { data, error } = useSWR(
-    `https://addons-dev.allizom.org/api/v5/site/`,
-    // fetcher
-  );
+// function useSiteData() {
+//   const { data, error } = useSWR(
+//     `https://addons-dev.allizom.org/api/v5/site/`,
+//     // fetcher
+//   );
 
-  return {
-    data,
-    isLoading: !error && !data,
-    isError: error,
-  };
-}
+//   return {
+//     data,
+//     isLoading: !error && !data,
+//     isError: error,
+//   };
+// }
 
 // This is needed because of https://github.com/mozilla/addons-frontend/issues/8616
 //
@@ -32,7 +32,7 @@ const sanitizeNoticeHTML = (text) => {
 
 export default function SiteNotices() {
   const { i18n } = useI18nState();
-  const { data } = useSiteData();
+  const { data } = useSiteState();
   const { notice, readOnly } = data || {};
   const { dispatch, state: userState } = useUserContext();
   const { currentUserWasLoggedOut } = userState;
@@ -46,6 +46,7 @@ export default function SiteNotices() {
         id="amo-site-notice"
         type="warning"
         key="amo-site-notice"
+        dismissible
       >
         <span
           // eslint-disable-next-line react/no-danger
@@ -83,23 +84,22 @@ export default function SiteNotices() {
     );
   }
 
-  return (
-    <>
-      <div>
-        <p>index page</p>
-        <button
-          onClick={() =>
-            dispatch({
-              type: LOG_IN_USER,
-              payload: { user: { id: 123 } },
-            })
-          }
-        >
-          login
-        </button>
-        <button onClick={() => dispatch({ type: LOG_OUT_USER })}>logout</button>
-        {JSON.stringify(userState)}
-      </div>
-    </>
-  );
+  return notices;
+  // <>
+  //   <div>
+  //     <p>index page</p>
+  //     <button
+  //       onClick={() =>
+  //         dispatch({
+  //           type: LOG_IN_USER,
+  //           payload: { user: { id: 123 } },
+  //         })
+  //       }
+  //     >
+  //       login
+  //     </button>
+  //     <button onClick={() => dispatch({ type: LOG_OUT_USER })}>logout</button>
+  //     {JSON.stringify(userState)}
+  //   </div>
+  // </>
 }

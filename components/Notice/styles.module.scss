@@ -1,6 +1,6 @@
 @import '../../styles/amo/styles.scss';
 // @import '~amo/css/styles';
-// @import '~amo/components/Button/styles';
+@import '../Button/styles.module.scss';
 
 .Notice {
   border-radius: $border-radius-s;

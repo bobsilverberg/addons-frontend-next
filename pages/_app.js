@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { GlobalProvider } from '../context/global';
 import { I18nProvider } from '../context/i18n';
-import { SiteProvider } from '../context/site';
+import { Provider as SiteProvider, getSiteData } from '../context/site';
 import { UserProvider } from '../context/user';
 
 import 'styles/globals.css';
@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps, siteData }) {
 
   return (
     <GlobalProvider>
-      <SiteProvider>
+      <SiteProvider siteData={siteData}>
         <UserProvider>
           <I18nProvider lang={lang}>
             <Component {...props} />
@@ -40,6 +40,21 @@ MyApp.propTypes = {
   Component: PropTypes.elementType,
   pageProps: PropTypes.shape({}),
   siteData: PropTypes.object,
+};
+
+MyApp.getInitialProps = async (ctx) => {
+  const siteData = await getSiteData();
+  console.log('---- in MyApp.getInitialProps, siteData: ', siteData);
+  // console.log('---- in MyApp.getInitialProps, ctx: ', ctx);
+  // console.log('---- about to fetch site data...');
+  // const res = await fetch(`https://addons-dev.allizom.org/api/v5/site/`);
+  // console.log('---- got site data: ', res);
+  // const statusCode = res.status > 200 ? res.status : false;
+  // const data = await res.json();
+
+  // Pass data to the page via props
+  // return { siteData: data, statusCode };
+  return { siteData };
 };
 
 export default MyApp;

@@ -3,16 +3,18 @@ import { createContext, useContext, useState } from 'react';
 
 const GlobalContext = createContext();
 
-export function GlobalProvider({ children }) {
+export function GlobalProvider({ children, initialSiteData }) {
   const router = useRouter();
   const [clientApp, setClientApp] = useState(router.query.clientApp);
   const [lang, setLang] = useState(router.query.lang);
+  const [siteData, setSiteData] = useState(router.query.lang);
 
   const state = {
     clientApp,
     lang,
     setClientApp,
     setLang,
+    siteData: initialSiteData,
   };
 
   return (

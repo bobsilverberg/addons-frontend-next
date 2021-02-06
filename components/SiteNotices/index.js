@@ -1,6 +1,7 @@
 // import PropTypes from 'prop-types';
 import useSWR from 'swr';
 
+import { useGlobalState } from '../../context/global';
 import { useI18nState } from '../../context/i18n';
 // import { useSiteState } from '../../context/site';
 import { LOG_IN_USER, LOG_OUT_USER, useUserContext } from '../../context/user';
@@ -32,57 +33,58 @@ const sanitizeNoticeHTML = (text) => {
 
 export default function SiteNotices() {
   const { i18n } = useI18nState();
+  const { siteData } = useGlobalState();
   // const { data } = useSiteState();
-  // const { notice, readOnly } = data || {};
+  const { notice, readOnly } = siteData || {};
   const { dispatch, state: userState } = useUserContext();
   const { currentUserWasLoggedOut } = userState;
   const notices = [];
-  // console.log('----- in SiteNotices, notice: ', notice);
+  console.log('----- in SiteNotices, siteData: ', siteData);
   // console.log('----- in SiteNotices, readOnly: ', readOnly);
-  // if (notice) {
-  //   notices.push(
-  //     <Notice
-  //       className={styles.SiteNotices}
-  //       id="amo-site-notice"
-  //       type="warning"
-  //       key="amo-site-notice"
-  //       dismissible
-  //     >
-  //       <span
-  //         // eslint-disable-next-line react/no-danger
-  //         dangerouslySetInnerHTML={sanitizeNoticeHTML(notice)}
-  //       />
-  //     </Notice>,
-  //   );
-  // }
+  if (notice) {
+    notices.push(
+      <Notice
+        className={styles.SiteNotices}
+        id="amo-site-notice"
+        type="warning"
+        key="amo-site-notice"
+        dismissible
+      >
+        <span
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={sanitizeNoticeHTML(notice)}
+        />
+      </Notice>,
+    );
+  }
 
-  // if (readOnly) {
-  //   notices.push(
-  //     <Notice
-  //       className={styles.SiteNotices}
-  //       id="amo-site-read-only"
-  //       type="warning"
-  //       key="amo-site-read-only"
-  //     >
-  //       {i18n.gettext(`Some features are temporarily disabled while we
-  //             perform website maintenance. We'll be back to full capacity
-  //             shortly.`)}
-  //     </Notice>,
-  //   );
-  // }
+  if (readOnly) {
+    notices.push(
+      <Notice
+        className={styles.SiteNotices}
+        id="amo-site-read-only"
+        type="warning"
+        key="amo-site-read-only"
+      >
+        {i18n.gettext(`Some features are temporarily disabled while we
+              perform website maintenance. We'll be back to full capacity
+              shortly.`)}
+      </Notice>,
+    );
+  }
 
-  // if (currentUserWasLoggedOut) {
-  //   notices.push(
-  //     <Notice
-  //       className="SiteNotices"
-  //       id="user-was-logged-out"
-  //       type="warning"
-  //       key="user-was-logged-out"
-  //     >
-  //       {i18n.gettext('You have been logged out.')}
-  //     </Notice>,
-  //   );
-  // }
+  if (currentUserWasLoggedOut) {
+    notices.push(
+      <Notice
+        className="SiteNotices"
+        id="user-was-logged-out"
+        type="warning"
+        key="user-was-logged-out"
+      >
+        {i18n.gettext('You have been logged out.')}
+      </Notice>,
+    );
+  }
 
   return notices;
   // <>

@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <UserProvider>
       <I18nProvider lang={lang}>
-        <GlobalProvider>
+        <GlobalProvider initialSiteData={siteData}>
           <Component {...props} />
         </GlobalProvider>
       </I18nProvider>

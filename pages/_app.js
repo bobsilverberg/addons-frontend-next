@@ -15,21 +15,33 @@ function MyApp({ Component, pageProps }) {
   const [siteData, setSiteData] = useState(null);
   const [siteDataLoading, setSiteDataLoading] = useState(false);
 
-  const loadSiteData = async () => {
-    console.log('---- siteData in MyApp: ', siteData);
-    if (!siteData && !siteDataLoading) {
-      setSiteDataLoading(true);
-      console.log('---- about to fetch site data...');
-      const res = await fetch(`https://addons-dev.allizom.org/api/v5/site/`);
+  if (!siteData && !siteDataLoading) {
+    setSiteDataLoading(true);
+    console.log('---- about to fetch site data...');
+    fetch(`https://addons-dev.allizom.org/api/v5/site/`).then((res) => {
       console.log('---- got site data: ', res);
-      // const statusCode = res.status > 200 ? res.status : false;
-      const data = await res.json();
-      setSiteData(data);
-      setSiteDataLoading(false);
-    }
-  };
+      res.json().then((data) => {
+        setSiteData(data);
+        setSiteDataLoading(false);
+      });
+    });
+  }
 
-  loadSiteData();
+  // const loadSiteData = async () => {
+  //   console.log('---- siteData in MyApp: ', siteData);
+  //   if (!siteData && !siteDataLoading) {
+  //     setSiteDataLoading(true);
+  //     console.log('---- about to fetch site data...');
+  //     const res = await fetch(`https://addons-dev.allizom.org/api/v5/site/`);
+  //     console.log('---- got site data: ', res);
+  //     // const statusCode = res.status > 200 ? res.status : false;
+  //     const data = await res.json();
+  //     setSiteData(data);
+  //     setSiteDataLoading(false);
+  //   }
+  // };
+
+  // loadSiteData();
   // Here's a way to get config values into _app.js
   // const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 

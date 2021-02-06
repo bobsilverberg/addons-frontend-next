@@ -11,6 +11,13 @@ import { UserProvider } from '../context/user';
 import 'styles/globals.css';
 import 'components/AddonBadges/styles.scss';
 
+// See https://github.com/kirill-konshin/next-redux-wrapper#app
+// for an example of using a class instead of a function, and maybe I can
+// make something work with that.
+//
+// Here's a question about the same thing without a good answer:
+// https://stackoverflow.com/questions/57759562/how-to-fetch-data-only-once-in-a-next-js-app-and-make-it-accesible-to-all-the-ap
+
 function MyApp({ Component, pageProps }) {
   const [siteData, setSiteData] = useState(null);
   const [siteDataLoading, setSiteDataLoading] = useState(false);

@@ -418,3 +418,15 @@ export const selectLocalizedContent = (field, lang) => {
 
   return field[lang];
 };
+
+export function convertBoolean(value) {
+  switch (value) {
+    case true:
+    case 1:
+    case '1':
+    case 'true':
+      return true;
+    default:
+      return false;
+  }
+}

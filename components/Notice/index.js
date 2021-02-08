@@ -1,7 +1,6 @@
 import makeClassName from 'classnames';
 import invariant from 'invariant';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 
 import { useGlobalState } from '../../context/global';
 import { useI18nState } from '../../context/i18n';

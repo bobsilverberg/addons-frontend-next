@@ -132,5 +132,6 @@ module.exports = {
     apiHost: apiProdHost,
     apiPath: '/api/',
     apiVersion: 'v5',
+    enableFeatureExperienceSurvey: 'true',
   },
 };

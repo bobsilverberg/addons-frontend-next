@@ -20,6 +20,7 @@
     "photon-colors": "^3.3.2",
     "prop-types": "^15.7.2",
     "react": "17.0.1",
+    "react-cookie": "^4.0.3",
     "react-dom": "17.0.1",
     "sass": "^1.29.0",
     "swr": "^0.3.9"

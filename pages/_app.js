@@ -17,38 +17,28 @@ import 'components/AddonBadges/styles.scss';
 //
 // Here's a question about the same thing without a good answer:
 // https://stackoverflow.com/questions/57759562/how-to-fetch-data-only-once-in-a-next-js-app-and-make-it-accesible-to-all-the-ap
+// https://stackoverflow.com/questions/60899880/next-js-reduce-data-fetching-and-share-data-between-pages
+//
 
 function MyApp({ Component, pageProps }) {
   const [siteData, setSiteData] = useState(null);
   const [siteDataLoading, setSiteDataLoading] = useState(false);
 
-  if (!siteData && !siteDataLoading) {
-    setSiteDataLoading(true);
-    console.log('---- about to fetch site data...');
-    fetch(`https://addons-dev.allizom.org/api/v5/site/`).then((res) => {
+  const loadSiteData = async () => {
+    console.log('---- siteData in MyApp: ', siteData);
+    if (!siteData && !siteDataLoading) {
+      setSiteDataLoading(true);
+      console.log('---- about to fetch site data...');
+      const res = await fetch(`https://addons-dev.allizom.org/api/v5/site/`);
       console.log('---- got site data: ', res);
-      res.json().then((data) => {
-        setSiteData(data);
-        setSiteDataLoading(false);
-      });
-    });
-  }
+      // const statusCode = res.status > 200 ? res.status : false;
+      const data = await res.json();
+      setSiteData(data);
+      setSiteDataLoading(false);
+    }
+  };
 
-  // const loadSiteData = async () => {
-  //   console.log('---- siteData in MyApp: ', siteData);
-  //   if (!siteData && !siteDataLoading) {
-  //     setSiteDataLoading(true);
-  //     console.log('---- about to fetch site data...');
-  //     const res = await fetch(`https://addons-dev.allizom.org/api/v5/site/`);
-  //     console.log('---- got site data: ', res);
-  //     // const statusCode = res.status > 200 ? res.status : false;
-  //     const data = await res.json();
-  //     setSiteData(data);
-  //     setSiteDataLoading(false);
-  //   }
-  // };
-
-  // loadSiteData();
+  loadSiteData();
   // Here's a way to get config values into _app.js
   // const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
@@ -75,6 +65,10 @@ MyApp.propTypes = {
   pageProps: PropTypes.shape({}),
 };
 
+// The problem with getInitialProps is that it runs on every single page,
+// even when only client-side navigation is used, so any API requests in here
+// will be run every time, which isn't what we want.
+//
 // MyApp.getInitialProps = async (ctx) => {
 //   const siteData = await getSiteData();
 //   console.log('---- in MyApp.getInitialProps, siteData: ', siteData);

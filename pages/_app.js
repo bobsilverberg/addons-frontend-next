@@ -20,25 +20,7 @@ import 'components/AddonBadges/styles.scss';
 // https://stackoverflow.com/questions/60899880/next-js-reduce-data-fetching-and-share-data-between-pages
 //
 
-function MyApp({ Component, pageProps }) {
-  const [siteData, setSiteData] = useState(null);
-  const [siteDataLoading, setSiteDataLoading] = useState(false);
-
-  const loadSiteData = async () => {
-    console.log('---- siteData in MyApp: ', siteData);
-    if (!siteData && !siteDataLoading) {
-      setSiteDataLoading(true);
-      console.log('---- about to fetch site data...');
-      const res = await fetch(`https://addons-dev.allizom.org/api/v5/site/`);
-      console.log('---- got site data: ', res);
-      // const statusCode = res.status > 200 ? res.status : false;
-      const data = await res.json();
-      setSiteData(data);
-      setSiteDataLoading(false);
-    }
-  };
-
-  loadSiteData();
+function MyApp({ Component, pageProps, siteData }) {
   // Here's a way to get config values into _app.js
   // const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
@@ -46,14 +28,11 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const { lang } = router.query;
 
-  // We can add page props to pass into every component.
-  const props = { ...pageProps, siteData };
-
   return (
     <UserProvider>
       <I18nProvider lang={lang}>
         <GlobalProvider initialSiteData={siteData}>
-          <Component {...props} />
+          <Component {...pageProps} />
         </GlobalProvider>
       </I18nProvider>
     </UserProvider>
@@ -63,25 +42,21 @@ function MyApp({ Component, pageProps }) {
 MyApp.propTypes = {
   Component: PropTypes.elementType,
   pageProps: PropTypes.shape({}),
+  siteData: PropTypes.object,
 };
 
 // The problem with getInitialProps is that it runs on every single page,
 // even when only client-side navigation is used, so any API requests in here
 // will be run every time, which isn't what we want.
 //
-// MyApp.getInitialProps = async (ctx) => {
-//   const siteData = await getSiteData();
-//   console.log('---- in MyApp.getInitialProps, siteData: ', siteData);
-//   // console.log('---- in MyApp.getInitialProps, ctx: ', ctx);
-//   // console.log('---- about to fetch site data...');
-//   // const res = await fetch(`https://addons-dev.allizom.org/api/v5/site/`);
-//   // console.log('---- got site data: ', res);
-//   // const statusCode = res.status > 200 ? res.status : false;
-//   // const data = await res.json();
-
-//   // Pass data to the page via props
-//   // return { siteData: data, statusCode };
-//   return { siteData };
-// };
+MyApp.getInitialProps = async (ctx) => {
+  console.log('---- in MyApp.getInitialProps, about to fetch siteData...');
+  const res = await fetch(`https://addons-dev.allizom.org/api/v5/site/`);
+  const statusCode = res.status > 200 ? res.status : false;
+  const siteData = await res.json();
+  console.log('---- in MyApp.getInitialProps, got siteData: ', siteData);
+  // TODO: Need error checking!
+  return { siteData };
+};
 
 export default MyApp;

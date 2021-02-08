@@ -1,5 +1,4 @@
-// import PropTypes from 'prop-types';
-import useSWR from 'swr';
+import PropTypes from 'prop-types';
 
 import { useGlobalState } from '../../context/global';
 import { useI18nState } from '../../context/i18n';
@@ -8,19 +7,6 @@ import { LOG_IN_USER, LOG_OUT_USER, useUserContext } from '../../context/user';
 import { sanitizeHTML, nl2br } from '../../utils';
 import Notice from '../Notice';
 import styles from './styles.module.scss';
-
-// function useSiteData() {
-//   const { data, error } = useSWR(
-//     `https://addons-dev.allizom.org/api/v5/site/`,
-//     // fetcher
-//   );
-
-//   return {
-//     data,
-//     isLoading: !error && !data,
-//     isError: error,
-//   };
-// }
 
 // This is needed because of https://github.com/mozilla/addons-frontend/issues/8616
 //

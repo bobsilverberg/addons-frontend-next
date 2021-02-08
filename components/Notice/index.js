@@ -3,6 +3,7 @@ import invariant from 'invariant';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
+import { useGlobalState } from '../../context/global';
 import { useI18nState } from '../../context/i18n';
 import Button from '../Button';
 import IconXMark from '../IconXMark';
@@ -32,57 +33,66 @@ const validTypes = [
  * See https://design.firefox.com/photon/components/message-bars.html
  */
 export default function Notice({
-      actionHref,
-      actionOnClick,
-      actionTarget,
-      actionText,
-      actionTo,
-      againstGrey20,
-      children,
-      className,
-      dismissible,
-      light,
+  actionHref,
+  actionOnClick,
+  actionTarget,
+  actionText,
+  actionTo,
+  againstGrey20,
+  children,
+  className,
+  dismissible,
+  id,
+  light,
   onDismiss,
-      type,
+  type,
 }) {
-    invariant(validTypes.includes(type), `Unknown type: ${type}`);
+  invariant(validTypes.includes(type), `Unknown type: ${type}`);
   const { i18n } = useI18nState();
-  const [wasDismissed, setWasDismissed] = useState(false);
+  const { dismissedNotices, setDismissedNotices } = useGlobalState();
+  const wasDismissed = dismissedNotices.includes(id);
+
+  const extractId = () => {
+    if (dismissible) {
+      invariant(id, 'When dismissible=true, the id property must be defined');
+    }
+    return id || '';
+  };
 
   const onDismissNotice = (event) => {
-    setWasDismissed(true);
+    setDismissedNotices([...dismissedNotices, extractId()]);
     if (onDismiss) {
       onDismiss(event);
     }
   };
 
   if (dismissible && wasDismissed) {
-      return null;
-    }
+    return null;
+  }
 
-    const buttonProps = {
-      href: actionHref || undefined,
-      onClick: actionOnClick || undefined,
-      to: actionTo || undefined,
-    };
+  const buttonProps = {
+    href: actionHref || undefined,
+    onClick: actionOnClick || undefined,
+    to: actionTo || undefined,
+  };
 
-    let actionButton;
-    if (Object.values(buttonProps).some((val) => val !== undefined)) {
-      invariant(
-        actionText,
-        'When specifying an action button, actionText is required',
-      );
-      actionButton = (
-        <Button
+  let actionButton;
+  if (Object.values(buttonProps).some((val) => val !== undefined)) {
+    invariant(
+      actionText,
+      'When specifying an action button, actionText is required',
+    );
+    actionButton = (
+      <Button
         className={styles['Notice-button']}
-          micro
-          target={actionTarget}
-          {...buttonProps}
-        >
-          {actionText}
-        </Button>
-      );
-    }
+        micro
+        target={actionTarget}
+        {...buttonProps}
+      >
+        {actionText}
+      </Button>
+    );
+  }
 
   const finalClass = makeClassName(
     styles.Notice,
@@ -94,31 +104,31 @@ export default function Notice({
       [styles['Notice-light']]: light,
     },
   );
-    return (
-      <div className={finalClass}>
+  return (
+    <div className={finalClass}>
       <div className={styles['Notice-icon']} />
       <div className={styles['Notice-column']}>
         <div className={styles['Notice-content']}>
           <p className={styles['Notice-text']}>{children}</p>
-            {actionButton}
-          </div>
+          {actionButton}
         </div>
-        {dismissible && (
+      </div>
+      {dismissible && (
         <div className={styles['Notice-dismisser']}>
-            <Button
+          <Button
             className={styles['Notice-dismisser-button']}
             onClick={onDismissNotice}
-            >
-              <IconXMark
+          >
+            <IconXMark
               className={styles['Notice-dismisser-icon']}
-                alt={i18n.gettext('Dismiss this notice')}
-              />
-            </Button>
-          </div>
-        )}
-      </div>
-    );
-  }
+              alt={i18n.gettext('Dismiss this notice')}
+            />
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 Notice.propTypes = {
   actionHref: PropTypes.string,

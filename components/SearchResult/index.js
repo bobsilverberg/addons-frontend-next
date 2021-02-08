@@ -43,8 +43,6 @@ export default function SearchResult({
   const { clientApp, lang } = useGlobalState();
 
   const getAddonLink = () => {
-    console.log('---- in getAddonLink, clientApp: ', clientApp);
-    console.log('---- in getAddonLink, lang: ', lang);
     const { slug } = addon;
     let linkTo = getAddonURL({ clientApp, lang, slug });
 

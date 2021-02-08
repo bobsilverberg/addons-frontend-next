@@ -7,12 +7,15 @@ export function GlobalProvider({ children, initialSiteData }) {
   const router = useRouter();
   const [clientApp, setClientApp] = useState(router.query.clientApp);
   const [lang, setLang] = useState(router.query.lang);
-  const [siteData, setSiteData] = useState(router.query.lang);
+  const [siteData, setSiteData] = useState();
+  const [dismissedNotices, setDismissedNotices] = useState([]);
 
   const state = {
     clientApp,
+    dismissedNotices,
     lang,
     setClientApp,
+    setDismissedNotices,
     setLang,
     siteData: initialSiteData,
   };

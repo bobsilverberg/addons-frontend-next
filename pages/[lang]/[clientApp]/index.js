@@ -7,7 +7,7 @@ import Layout from 'components/Layout';
 import { CLIENT_APP_FIREFOX } from '../../../constants';
 import Error from 'pages/_error';
 import { createInternalShelf } from 'utils/addons';
-import styles from 'styles/Home.module.css';
+import styles from './styles.module.scss';
 
 export default function Home({ clientApp, shelfData, statusCode }) {
   const { i18n } = useI18nState();

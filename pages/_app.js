@@ -8,8 +8,8 @@ import { I18nProvider } from '../context/i18n';
 import { Provider as SiteProvider, getSiteData } from '../context/site';
 import { UserProvider } from '../context/user';
 
-import 'styles/globals.css';
-import 'components/AddonBadges/styles.scss';
+import 'styles/globals.scss';
+// import 'components/AddonBadges/styles.scss';
 
 // See https://github.com/kirill-konshin/next-redux-wrapper#app
 // for an example of using a class instead of a function, and maybe I can

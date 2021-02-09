@@ -7,7 +7,7 @@ import Layout from 'components/Layout';
 import Page from 'components/Page';
 import Error from 'pages/_error';
 // import AddonBadges from 'components/AddonBadges';
-import styles from 'styles/Home.module.css';
+import styles from './styles.module.scss';
 
 // const fetcher = (...args) => fetch(...args).then((res) => res.json());
 

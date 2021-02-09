@@ -5,7 +5,7 @@ import AppBanner from '../AppBanner';
 // import NotFound from 'amo/components/Errors/NotFound';
 // import UnavailableForLegalReasons from 'amo/components/Errors/UnavailableForLegalReasons';
 // import Footer from 'amo/components/Footer';
-import Header from 'amo/components/Header';
+// import Header from 'amo/components/Header';
 // import WrongPlatformWarning from 'amo/components/WrongPlatformWarning';
 // import InfoDialog from 'amo/components/InfoDialog';
 import { CLIENT_APP_ANDROID } from '../../constants';

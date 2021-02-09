@@ -1,0 +1,190 @@
+@import '../../../styles/amo/styles.scss';
+
+.Home {
+  width: 100%;
+}
+
+.Home-content {
+  margin: 0 auto;
+  max-width: $max-content-width;
+  padding: 0 $padding-page $padding-page;
+
+  // @include respond-to(large) {
+  padding: 0 $padding-page-l $padding-page-l;
+  // }
+}
+
+.Home-SubjectShelf {
+  .Card-header {
+    display: block;
+
+    // @include respond-to(extraLarge) {
+    display: none;
+    // }
+  }
+
+  .Card-contents {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    margin: 0 auto;
+    overflow: auto;
+    width: 100%;
+
+    // @include respond-to(extraLarge) {
+    border-top-left-radius: $border-radius-default;
+    border-top-right-radius: $border-radius-default;
+    flex-wrap: nowrap;
+    padding: 24px 36px;
+    // }
+  }
+}
+
+.Home-SubjectShelf-text-wrapper {
+  align-self: center;
+  display: none;
+  height: auto;
+
+  // @include respond-to(extraLarge) {
+  align-self: center;
+  display: block;
+  max-width: 130px;
+  // }
+
+  // @include respond-to(extraLarge) {
+  max-width: 250px;
+  // }
+}
+
+.Home-SubjectShelf-subheading {
+  font-size: $font-size-m-smaller;
+  margin: 0;
+}
+
+.Home-SubjectShelf-list {
+  align-self: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+
+  // @include respond-to(medium) {
+  flex-flow: row wrap;
+  // }
+
+  // @include respond-to(large) {
+  align-self: auto;
+  flex-wrap: nowrap;
+  // }
+}
+
+.Home-SubjectShelf-list-item {
+  flex-grow: 1;
+  list-style-type: none;
+  width: 100%;
+
+  // @include respond-to(medium) {
+  margin: 12px 0;
+  width: 40%;
+  // }
+
+  // @include respond-to(large) {
+  margin: 0;
+  text-align: center;
+  // }
+}
+
+.Home-SubjectShelf-link {
+  align-items: center;
+  display: flex;
+  font-size: $font-size-m-smaller;
+  text-decoration: none;
+
+  // @include respond-to(large) {
+  display: block;
+  // }
+
+  &:link,
+  &:visited {
+    color: $black;
+  }
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: $link-color;
+    text-decoration: underline;
+  }
+}
+
+.Home-SubjectShelf-list-item .Icon {
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: 64px;
+  border-radius: $border-radius-default;
+  content: '';
+  display: block;
+  height: 64px;
+  margin-bottom: 5px;
+  transform: scale(0.8);
+  width: 35%;
+
+  // @include respond-to(medium) {
+  transform: initial;
+  // }
+
+  // @include respond-to(large) {
+  background-position: center;
+  width: 100%;
+  // }
+
+  [dir='rtl'] & {
+    background-position: right;
+
+    // @include respond-to(large) {
+    background-position: center;
+    // }
+  }
+}
+
+.Home-noHeroError {
+  padding: 0 24px;
+}
+
+.Home-heroHeader {
+  color: $black;
+  padding: $padding-page 0 $padding-page-l;
+  text-align: center;
+
+  // @include respond-to(large) {
+  padding: 0 32px $padding-page;
+  // }
+}
+
+.Home-heroHeader-title {
+  font-size: $font-size-l;
+  line-height: 1;
+  margin: $padding-page-l 0 20px;
+
+  // @include respond-to(medium) {
+  font-size: $font-size-xl;
+  // }
+}
+
+.Home-heroHeader-subtitle {
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 1.15;
+  margin: $padding-page 0 $padding-page-l;
+
+  // @include respond-to(medium) {
+  font-size: $font-size-l;
+  line-height: 1;
+  // }
+}
+
+.Home-content .Card-contents .AddonsCard-list {
+  grid-auto-flow: row dense;
+}

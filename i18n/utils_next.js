@@ -20,55 +20,55 @@ const langMap = configGetPulic('langMap');
 const supportedLangs = langs.concat(Object.keys(langMap));
 const rtlLangs = configGetPulic('rtlLangs');
 
-// export function localeToLang(locale?: any, log_?: typeof log = log) {
-//   let lang;
-//   if (locale && locale.split) {
-//     const parts = locale.split('_');
-//     if (parts.length === 1) {
-//       lang = parts[0].toLowerCase();
-//     } else if (parts.length === 2) {
-//       let pt2 = parts[1];
-//       pt2 =
-//         pt2.length > 2
-//           ? pt2[0].toUpperCase() + pt2.slice(1).toLowerCase()
-//           : pt2.toUpperCase();
-//       lang = `${parts[0].toLowerCase()}-${pt2}`;
-//     } else if (parts.length === 3) {
-//       // sr_RS should be sr-RS
-//       lang = `${parts[0].toLowerCase()}-${parts[2].toUpperCase()}`;
-//     } else {
-//       log_.error(`Unable to map a language from locale code [${locale}]`);
-//     }
-//   }
-//   return lang;
-// }
+export function localeToLang(locale, log_ = log) {
+  let lang;
+  if (locale && locale.split) {
+    const parts = locale.split('_');
+    if (parts.length === 1) {
+      lang = parts[0].toLowerCase();
+    } else if (parts.length === 2) {
+      let pt2 = parts[1];
+      pt2 =
+        pt2.length > 2
+          ? pt2[0].toUpperCase() + pt2.slice(1).toLowerCase()
+          : pt2.toUpperCase();
+      lang = `${parts[0].toLowerCase()}-${pt2}`;
+    } else if (parts.length === 3) {
+      // sr_RS should be sr-RS
+      lang = `${parts[0].toLowerCase()}-${parts[2].toUpperCase()}`;
+    } else {
+      log_.error(`Unable to map a language from locale code [${locale}]`);
+    }
+  }
+  return lang;
+}
 
-// export function langToLocale(language?: any, log_?: typeof log = log) {
-//   let locale;
-//   if (language && language.split) {
-//     const parts = language.split('-');
-//     if (parts.length === 1) {
-//       locale = parts[0].toLowerCase();
-//     } else if (parts.length === 2) {
-//       let pt2 = parts[1];
-//       pt2 =
-//         pt2.length > 2
-//           ? pt2[0].toUpperCase() + pt2.slice(1).toLowerCase()
-//           : pt2.toUpperCase();
-//       locale = `${parts[0].toLowerCase()}_${pt2}`;
-//     } else if (parts.length === 3) {
-//       // sr-Cyrl-RS should be sr_RS
-//       locale = `${parts[0].toLowerCase()}_${parts[2].toUpperCase()}`;
-//     } else {
-//       log_.error(`Unable to map a locale from language code [${language}]`);
-//     }
-//   }
-//   return locale;
-// }
+export function langToLocale(language, log_ = log) {
+  let locale;
+  if (language && language.split) {
+    const parts = language.split('-');
+    if (parts.length === 1) {
+      locale = parts[0].toLowerCase();
+    } else if (parts.length === 2) {
+      let pt2 = parts[1];
+      pt2 =
+        pt2.length > 2
+          ? pt2[0].toUpperCase() + pt2.slice(1).toLowerCase()
+          : pt2.toUpperCase();
+      locale = `${parts[0].toLowerCase()}_${pt2}`;
+    } else if (parts.length === 3) {
+      // sr-Cyrl-RS should be sr_RS
+      locale = `${parts[0].toLowerCase()}_${parts[2].toUpperCase()}`;
+    } else {
+      log_.error(`Unable to map a locale from language code [${language}]`);
+    }
+  }
+  return locale;
+}
 
-// export function normalizeLang(lang?: string) {
-//   return localeToLang(langToLocale(lang));
-// }
+export function normalizeLang(lang) {
+  return localeToLang(langToLocale(lang));
+}
 
 // export function normalizeLocale(locale: string) {
 //   return langToLocale(localeToLang(locale));
@@ -89,29 +89,26 @@ const rtlLangs = configGetPulic('rtlLangs');
 //   _langs: typeof langs,
 // |};
 
-// export function isValidLang(
-//   lang?: string,
-//   { _langs = langs }: IsValidLangOptions = {},
-// ) {
-//   return _langs.includes(lang);
-// }
+export function isValidLang(lang, { _langs = langs } = {}) {
+  return _langs.includes(lang);
+}
 
-// export function sanitizeLanguage(langOrLocale?: string) {
-//   let language = normalizeLang(langOrLocale);
-//   // Only look in the un-mapped lang list.
-//   if (!isValidLang(language)) {
-//     // eslint-disable-next-line no-prototype-builtins
-//     language = langMap.hasOwnProperty(language)
-//       ? langMap[language]
-//       : defaultLang;
-//   }
-//   return language;
-// }
+export function sanitizeLanguage(langOrLocale) {
+  let language = normalizeLang(langOrLocale);
+  // Only look in the un-mapped lang list.
+  if (!isValidLang(language)) {
+    // eslint-disable-next-line no-prototype-builtins
+    language = langMap.hasOwnProperty(language)
+      ? langMap[language]
+      : defaultLang;
+  }
+  return language;
+}
 
-// export function isRtlLang(lang: string) {
-//   const language = sanitizeLanguage(lang);
-//   return rtlLangs.includes(language);
-// }
+export function isRtlLang(lang) {
+  const language = sanitizeLanguage(lang);
+  return rtlLangs.includes(language);
+}
 
 // export function getDirection(lang: string) {
 //   return isRtlLang(lang) ? RTL : LTR;

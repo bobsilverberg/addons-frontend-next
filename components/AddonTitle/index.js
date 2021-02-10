@@ -1,32 +1,25 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import { getAddonURL } from 'utils';
 import { isRtlLang } from 'i18n/utils_next';
 import LoadingText from '../LoadingText';
 import { addQueryParams } from 'utils';
+import { useI18nState } from 'context/i18n';
 
 import styles from './styles.module.scss';
 
-type Props = {|
-  addon: AddonType | null,
-  as?: string,
-  linkToAddon?: boolean,
-  queryParamsForAttribution?: { [name: string]: string },
-|};
-
-type InternalProps = {|
-  ...Props,
-  i18n: I18nType,
-  isRTL: boolean,
-|};
-
-export const AddonTitleBase = ({
+export default function AddonTitle({
   addon,
   as: Component = 'h1',
-  i18n,
-  isRTL,
   linkToAddon = false,
   queryParamsForAttribution = {},
-}: InternalProps) => {
+}) {
+  const { i18n } = useI18nState();
+  const router = useRouter();
+  const { lang } = router.query;
+
+  const isRTL = isRtlLang(lang || '');
   const authors = [];
 
   if (addon && addon.authors) {
@@ -39,8 +32,8 @@ export const AddonTitleBase = ({
     addonAuthors.forEach((author, index) => {
       authors.push(
         author.url ? (
-          <Link key={author.id} to={`/user/${author.id}/`}>
-            {author.name}
+          <Link key={author.id} href={`/user/${author.id}/`}>
+            <a>{author.name}</a>
           </Link>
         ) : (
           author.name
@@ -54,23 +47,23 @@ export const AddonTitleBase = ({
   }
 
   return (
-    <Component className="AddonTitle">
+    <Component className={styles.AddonTitle}>
       {addon ? (
         <>
           {linkToAddon ? (
             <Link
-              to={addQueryParams(
+              href={addQueryParams(
                 getAddonURL(addon.slug),
                 queryParamsForAttribution,
               )}
             >
-              {addon.name}
+              <a>{addon.name}</a>
             </Link>
           ) : (
             addon.name
           )}
           {authors.length > 0 && (
-            <span className="AddonTitle-author">
+            <span className={styles['AddonTitle-author']}>
               {' '}
               {isRTL ? (
                 <>
@@ -93,17 +86,11 @@ export const AddonTitleBase = ({
       )}
     </Component>
   );
+}
+
+AddonTitle.propTypes = {
+  addon: PropTypes.object,
+  as: PropTypes.string,
+  linkToAddon: PropTypes.bool,
+  queryParamsForAttribution: PropTypes.object,
 };
-
-const mapStateToProps = (state: AppState) => {
-  return {
-    isRTL: isRtlLang(state.api.lang || ''),
-  };
-};
-
-const AddonTitle: React.ComponentType<Props> = compose(
-  translate(),
-  connect(mapStateToProps),
-)(AddonTitleBase);
-
-export default AddonTitle;

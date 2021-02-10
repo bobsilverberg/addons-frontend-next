@@ -7,12 +7,14 @@ import useSWR from 'swr';
 import { useI18nState } from 'context/i18n';
 import { useGlobalState } from 'context/global';
 import AddonsByAuthorsCard from 'components/AddonsByAuthorsCard';
+import AddonTitle from 'components/AddonTitle';
 import Card from 'components/Card';
 import Page from 'components/Page';
 import ThemeImage from 'components/ThemeImage';
 import Error from 'pages/_error';
 import { getAddonURL } from 'utils';
 import { getAddonIconUrl } from 'utils/imageUtils';
+import { createInternalAddon } from 'utils/addons';
 
 import {
   ADDON_TYPE_EXTENSION,
@@ -79,6 +81,38 @@ export default function Addon({ addon, statusCode }) {
     );
   }
 
+  function renderAddonsByAuthorsCard({ isForTheme }) {
+    const isThemeType = addon && ADDON_TYPE_STATIC_THEME === addon.type;
+    if (
+      !addon ||
+      !addon.authors.length ||
+      (isForTheme && !isThemeType) ||
+      (!isForTheme && isThemeType)
+    ) {
+      return null;
+    }
+
+    /* Adding wrapping divs here seems to address what we think is a
+      reconcillation issue —— which causes the classname to not always get added
+      correctly (e.g.: when the page is refreshed and the addon has
+      a description).
+      See https://github.com/mozilla/addons-frontend/issues/4744
+    */
+
+    return (
+      <div>
+        <AddonsByAuthorsCard
+          addonType={addon.type}
+          authorDisplayName={addon.authors[0].name}
+          authorIds={addon.authors.map((author) => author.id)}
+          className="Addon-MoreAddonsCard"
+          forAddonSlug={addon.slug}
+          numberOfAddons={6}
+        />
+      </div>
+    );
+  }
+
   const isThemeType = addon && addon.type === ADDON_TYPE_STATIC_THEME;
   const addonType = addon ? addon.type : ADDON_TYPE_EXTENSION;
   const addonPreviews = addon ? addon.previews : [];
@@ -121,6 +155,45 @@ export default function Addon({ addon, statusCode }) {
                 </div>
               </Card>
               {/* <AddonMoreInfo addon={addonData} i18n={i18n} /> */}
+              <Card className="Addon-header-meta-and-ratings" photonStyle>
+                {/* <AddonMeta addon={addon} /> */}
+              </Card>
+            </div>
+            <div className="Addon-details">
+              <div className="Addon-main-content">
+                {renderAddonsByAuthorsCard({ isForTheme: true })}
+
+                {/* {addonPreviews.length > 0 && !isThemeType ? (
+                  <Card
+                    className="Addon-screenshots"
+                    header={i18n.gettext('Screenshots')}
+                  >
+                    <ScreenShots previews={addonPreviews} />
+                  </Card>
+                ) : null}
+
+                {this.renderShowMoreCard()}
+
+                {this.renderDevCommentsCard()} */}
+
+                {/* {addonType === ADDON_TYPE_EXTENSION && (
+                  <AddonRecommendations addon={addon} />
+                )} */}
+              </div>
+
+              {/* {this.renderRatingsCard()}
+
+              <ContributeCard addon={addon} />
+
+              <PermissionsCard version={currentVersion} />
+
+              <AddonMoreInfo addon={addon} />
+
+              <AddAddonToCollection addon={addon} />
+
+              {this.renderVersionReleaseNotes()} */}
+
+              {renderAddonsByAuthorsCard({ isForTheme: false })}
             </div>
           </div>
         </Page>
@@ -162,5 +235,5 @@ export async function getServerSideProps(context) {
   }
 
   // Pass data to the page via props
-  return { props: { addon: data, statusCode } };
+  return { props: { addon: createInternalAddon(data, lang), statusCode } };
 }

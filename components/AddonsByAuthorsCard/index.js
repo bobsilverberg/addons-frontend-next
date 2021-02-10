@@ -49,7 +49,7 @@ export default function AddonsByAuthorsCard({
   }
 
   const { setNumberOfAddonsByAuthors } = useGlobalState();
-  const i18n = useI18nState();
+  const { i18n } = useI18nState();
   const router = useRouter();
 
   function getCurrentPage() {

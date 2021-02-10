@@ -11,6 +11,7 @@
     "@mozilla-protocol/tokens": "^5.0.5",
     "classnames": "^2.2.6",
     "common-tags": "^1.8.0",
+    "deep-eql": "^4.0.0",
     "filesize": "^6.1.0",
     "invariant": "^2.2.4",
     "jed": "^1.1.1",

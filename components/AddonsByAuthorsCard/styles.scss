@@ -1,0 +1,93 @@
+@import '../../styles/amo/styles.scss';
+
+.AddonsByAuthorsCard {
+  margin-top: 0;
+
+  .Card-contents .AddonsCard-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  &.AddonsCard--horizontal {
+    // overriding default list styles for theme
+    &.AddonsByAuthorsCard--theme {
+      .Card-contents .AddonsCard-list {
+        display: block;
+
+        // stylelint-disable max-nesting-depth
+        // @include respond-to(medium) {
+        //   display: grid;
+        // }
+
+        // @include respond-to(large) {
+        //   display: block;
+        // }
+
+        // @include respond-to(extraLarge) {
+        //   display: grid;
+        // }
+      }
+    }
+
+    &:not(.Card--no-footer) {
+      .Card-contents {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    // @include respond-to(large) {
+    .Card-contents .AddonsCard-list {
+      background-color: $white;
+      display: grid;
+      grid-auto-flow: initial;
+      grid-gap: 6px;
+      grid-template-columns: repeat(2, minmax(50%, 1fr));
+    }
+    // }
+  }
+
+  // Override the wide window styles from SearchResult because
+  // the AddonsByAuthorsCard panel always has a short width.
+  .SearchResult-name {
+    flex-direction: column;
+
+    .PromotedBadge {
+      margin: 6px 0;
+    }
+  }
+}
+
+.AddonsByAuthorsCard:not(.AddonsByAuthorsCard--theme) {
+  .Card-contents .AddonsCard-list {
+    // @include respond-to(large) {
+    grid-template-columns: repeat(1, 1fr);
+    // }
+
+    // @include respond-to(extraExtraLarge) {
+    grid-template-columns: repeat(2, 1fr);
+    // }
+  }
+}
+
+.AddonsByAuthorsCard--theme {
+  .Card-contents .AddonsCard-list {
+    .SearchResult-result {
+      width: 100%;
+    }
+
+    .SearchResult-icon-wrapper {
+      margin: 0 0 10px;
+      width: 100%;
+    }
+
+    .SearchResult-icon {
+      border-radius: $border-radius-default;
+      max-height: $theme-height-legacy;
+    }
+
+    // @include respond-to(extraLarge) {
+    grid-template-columns: repeat(3, 1fr);
+    // }
+  }
+}

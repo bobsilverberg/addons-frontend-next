@@ -11,16 +11,19 @@ export function GlobalProvider({ children, initialSiteData }) {
   const [clientApp, setClientApp] = useState(router.query.clientApp);
   const [dismissedNotices, setDismissedNotices] = useState([]);
   const [lang, setLang] = useState(router.query.lang);
+  const [numberOfAddonsByAuthors, setNumberOfAddonsByAuthors] = useState();
   const [siteData, setSiteData] = useState();
   const [viewContext, setViewContext] = useState();
 
   const state = {
     clientApp,
-    dismissedNotices,
-    lang,
     setClientApp,
+    dismissedNotices,
     setDismissedNotices,
+    lang,
     setLang,
+    numberOfAddonsByAuthors,
+    setNumberOfAddonsByAuthors,
     siteData: initialSiteData,
     viewContext: VIEW_CONTEXT_EXPLORE,
     setViewContext,

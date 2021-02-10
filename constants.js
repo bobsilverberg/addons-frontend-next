@@ -88,6 +88,15 @@ export const SURVEY_ACTION_DISMISSED = 'Dismissed survey notice';
 export const SURVEY_ACTION_SHOWN = 'Shown survey notice';
 export const SURVEY_ACTION_VISITED = 'Visited survey';
 
+// Add-on Search Sort Values
+export const SEARCH_SORT_TRENDING = 'hotness';
+export const SEARCH_SORT_TOP_RATED = 'rating';
+export const SEARCH_SORT_POPULAR = 'users';
+export const SEARCH_SORT_RANDOM = 'random';
+export const SEARCH_SORT_RELEVANCE = 'relevance';
+export const SEARCH_SORT_UPDATED = 'updated';
+export const SEARCH_SORT_RECOMMENDED = 'recommended';
+
 // View Contexts that aren't an addonType
 export const VIEW_CONTEXT_EXPLORE = 'VIEW_CONTEXT_EXPLORE';
 export const VIEW_CONTEXT_HOME = 'VIEW_CONTEXT_HOME';

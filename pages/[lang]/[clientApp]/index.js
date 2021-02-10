@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useI18nState } from 'context/i18n';
 import LandingAddonsCard from 'components/LandingAddonsCard';
 import Page from 'components/Page';
-import Layout from 'components/Layout';
 import { CLIENT_APP_FIREFOX } from '../../../constants';
 import Error from 'pages/_error';
 import { createInternalShelf } from 'utils/addons';
@@ -19,33 +18,28 @@ export default function Home({ clientApp, shelfData, statusCode }) {
 
   const { shelves } = shelfData;
   return (
-    <Layout title={i18n.gettext('Add-ons Home Page')}>
-      <div className={styles.container}>
-        <Head>
-          <title>{i18n.gettext('Add-ons Home Page')}</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+    <div className={styles.container}>
+      <Head>
+        <title>{i18n.gettext('Add-ons Home Page')}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-        <main className={styles.main}>
-          <Page isHomePage showWrongPlatformWarning={!isDesktopSite}>
-            <div className="Home">
-              <h1 className={styles.title}>Add-ons Home Page</h1>
+      <main className={styles.main}>
+        <Page isHomePage showWrongPlatformWarning={!isDesktopSite}>
+          <div className="Home">
+            <h1 className={styles.title}>Add-ons Home Page</h1>
 
-              {shelves.map((shelf) => {
-                return (
-                  <>
-                    <LandingAddonsCard
-                      addons={shelf.addons}
-                      key={shelf.title}
-                    />
-                  </>
-                );
-              })}
-            </div>
-          </Page>
-        </main>
-      </div>
-    </Layout>
+            {shelves.map((shelf) => {
+              return (
+                <>
+                  <LandingAddonsCard addons={shelf.addons} key={shelf.title} />
+                </>
+              );
+            })}
+          </div>
+        </Page>
+      </main>
+    </div>
   );
 }
 

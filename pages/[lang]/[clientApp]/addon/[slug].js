@@ -1,14 +1,23 @@
+import makeClassName from 'classnames';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import useSWR from 'swr';
 import { useI18nState } from 'context/i18n';
 import { useGlobalState } from 'context/global';
-import Layout from 'components/Layout';
+import AddonsByAuthorsCard from 'components/AddonsByAuthorsCard';
+import Card from 'components/Card';
 import Page from 'components/Page';
+import ThemeImage from 'components/ThemeImage';
 import Error from 'pages/_error';
 import { getAddonURL } from 'utils';
+import { getAddonIconUrl } from 'utils/imageUtils';
 
+import {
+  ADDON_TYPE_EXTENSION,
+  ADDON_TYPE_STATIC_THEME,
+} from '../../../../constants';
 import styles from './styles.module.scss';
 
 // const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -27,8 +36,18 @@ function useRatings(addonId) {
 }
 
 export default function Addon({ addon, statusCode }) {
-  const { setViewContext } = useGlobalState();
+  const {
+    numberOfAddonsByAuthors,
+    setViewContext,
+    viewContext,
+  } = useGlobalState();
   const { i18n } = useI18nState();
+
+  useEffect(() => {
+    if (addon.type) {
+      setViewContext(addon.type);
+    }
+  }, [addon]);
 
   if (statusCode) {
     return <Error statusCode={statusCode} />;
@@ -36,33 +55,77 @@ export default function Addon({ addon, statusCode }) {
 
   const { ratings, isLoading, isError } = useRatings(addon.id);
 
-  if (addon.type) {
-    setViewContext(addon.type);
+  function headerImage() {
+    if (addon && ADDON_TYPE_STATIC_THEME === addon.type) {
+      return <ThemeImage addon={addon} roundedCorners />;
+    }
+
+    const label = addon
+      ? i18n.sprintf(i18n.gettext('Preview of %(title)s'), {
+          title: addon.name,
+        })
+      : null;
+
+    return (
+      <div className={styles['Addon-icon']} key="Addon-icon-header">
+        <div className={styles['Addon-icon-wrapper']}>
+          <img
+            alt={label}
+            className={styles['Addon-icon-image']}
+            src={getAddonIconUrl(addon)}
+          />
+        </div>
+      </div>
+    );
   }
 
+  const isThemeType = addon && addon.type === ADDON_TYPE_STATIC_THEME;
+  const addonType = addon ? addon.type : ADDON_TYPE_EXTENSION;
+  const addonPreviews = addon ? addon.previews : [];
+
   return (
-    <Layout title="The add-on detail page">
-      <div className={styles.container}>
-        <Head>
-          <title>Addon Detail Page</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+    <div className={styles.container}>
+      <Head>
+        <title>Addon Detail Page</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-        <main className={styles.main}>
-          <Page showWrongPlatformWarning={false}>
-            <h1 className={styles.title}>Addon Detail Page</h1>
-            <div>
-              Rating:
-              {isError ? <div>failed to load</div> : null}
-              {isLoading ? <div>oading...</div> : null}
-              {ratings ? ratings.grouped_ratings[1] : null}
+      <main className={styles.main}>
+        <Page showWrongPlatformWarning={false}>
+          <div
+            className={makeClassName(
+              styles.Addon,
+              styles[`Addon-${addonType}`],
+              {
+                [styles['Addon-theme']]: isThemeType,
+                [styles['Addon--has-more-than-0-addons']]:
+                  Number(numberOfAddonsByAuthors) > 0,
+                [styles['Addon--has-more-than-3-addons']]:
+                  Number(numberOfAddonsByAuthors) > 3,
+              },
+            )}
+            data-site-identifier={addon ? addon.id : null}
+          >
+            <div className="Addon-header-wrapper">
+              <Card className="Addon-header-info-card" photonStyle>
+                <header className="Addon-header">
+                  {headerImage()}
+
+                  <AddonTitle addon={addon} />
+                </header>
+                <div>
+                  Rating:
+                  {isError ? <div>failed to load</div> : null}
+                  {isLoading ? <div>oading...</div> : null}
+                  {ratings ? ratings.grouped_ratings[1] : null}
+                </div>
+              </Card>
+              {/* <AddonMoreInfo addon={addonData} i18n={i18n} /> */}
             </div>
-
-            {/* <AddonMoreInfo addon={addonData} i18n={i18n} /> */}
-          </Page>
-        </main>
-      </div>
-    </Layout>
+          </div>
+        </Page>
+      </main>
+    </div>
   );
 }
 
@@ -72,12 +135,12 @@ Addon.propTypes = {
 };
 
 export async function getServerSideProps(context) {
-  // console.log(context);
   const { clientApp, lang, slug } = context.params;
 
   // Fetch data from external API
+  console.log('--- fetching data on the server for: ', slug);
   const res = await fetch(
-    `	https://addons-dev.allizom.org/api/v4/addons/addon/${slug}/?lang=${lang}`,
+    `	https://addons-dev.allizom.org/api/v5/addons/addon/${slug}/?lang=${lang}`,
   );
   const statusCode = res.status > 200 ? res.status : false;
   const data = await res.json();

@@ -1,4 +1,5 @@
 import makeClassName from 'classnames';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 
 import AppBanner from '../AppBanner';
@@ -58,6 +59,11 @@ export default function Page({
             [styles['Page-no-hero-promo']]: clientApp === CLIENT_APP_ANDROID,
           })}
         >
+          <div>
+            <Link href="/en-US/firefox/">
+              <a>Go home</a>
+            </Link>
+          </div>
           {
             // Exclude the AppBanner from the home page, but include it on the
             // Android home page.

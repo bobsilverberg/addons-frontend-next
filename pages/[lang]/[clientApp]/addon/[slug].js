@@ -1,12 +1,14 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import useSWR from 'swr';
-
 import { useI18nState } from 'context/i18n';
+import { useGlobalState } from 'context/global';
 import Layout from 'components/Layout';
 import Page from 'components/Page';
 import Error from 'pages/_error';
-// import AddonBadges from 'components/AddonBadges';
+import { getAddonURL } from 'utils';
+
 import styles from './styles.module.scss';
 
 // const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -24,42 +26,18 @@ function useRatings(addonId) {
   };
 }
 
-export default function Addon({ aProp, addonData, statusCode }) {
+export default function Addon({ addon, statusCode }) {
+  const { setViewContext } = useGlobalState();
   const { i18n } = useI18nState();
-  // const { ratings, isLoading, isError } = useRatings(addonData.id);
-
-    // This makes sure we do not try to dispatch any new actions in the case
-    // of an error.
-    if (!errorHandler.hasError()) {
-      if (addon) {
-        // If the slug (which is actually the URL parameter) does not match the
-        // add-on's slug, it means the URL isn't the "canonical URL" and we
-        // have to send a server redirect to fix that. The URL can contain an
-        // add-on ID, a GUID or the actual slug. In some cases, it can have
-        // trailing spaces or slightly different characters. As far as the API
-        // returns an add-on for the value of this parameter, we should be able
-        // to display it, after the redirect below.
-        if (addon.slug !== params.slug) {
-          // We only load add-ons by slug, but ID must be supported too because
-          // it is a legacy behavior.
-          dispatch(
-            sendServerRedirect({
-              status: 301,
-              url: `/${lang}/${clientApp}${getAddonURL(addon.slug)}`,
-            }),
-          );
-          return;
-        }
-
-        dispatch(setViewContext(addon.type));
-      } else if (!addonIsLoading) {
-        dispatch(fetchAddon({ slug: params.slug, errorHandler }));
-      }
-    }
-  }
 
   if (statusCode) {
     return <Error statusCode={statusCode} />;
+  }
+
+  const { ratings, isLoading, isError } = useRatings(addon.id);
+
+  if (addon.type) {
+    setViewContext(addon.type);
   }
 
   return (
@@ -88,9 +66,14 @@ export default function Addon({ aProp, addonData, statusCode }) {
   );
 }
 
+Addon.propTypes = {
+  addon: PropTypes.object,
+  statusCode: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+};
+
 export async function getServerSideProps(context) {
-  console.log(context);
-  const { lang, slug } = context.params;
+  // console.log(context);
+  const { clientApp, lang, slug } = context.params;
 
   // Fetch data from external API
   const res = await fetch(
@@ -107,22 +90,14 @@ export async function getServerSideProps(context) {
     // trailing spaces or slightly different characters. As far as the API
     // returns an add-on for the value of this parameter, we should be able
     // to display it, after the redirect below.
-      return {
-        redirect: {
-          destination: `/${lang}/${clientApp}${getAddonURL(addon.slug)}`,
-          statusCode: 301,
-        },
-      };
-      // Old code from constructor
-      // dispatch(
-      //   sendServerRedirect({
-      //     status: 301,
-      //     url: `/${lang}/${clientApp}${getAddonURL(addon.slug)}`,
-      //   }),
-      // );
-      // return;
-    }
+    return {
+      redirect: {
+        destination: getAddonURL({ clientApp, lang, slug: data.slug }),
+        statusCode: 301,
+      },
+    };
+  }
 
   // Pass data to the page via props
-  return { props: { addonData: data, statusCode } };
+  return { props: { addon: data, statusCode } };
 }

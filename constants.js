@@ -87,3 +87,10 @@ export const SURVEY_CATEGORY = 'AMO Addon / Experience Survey Notice';
 export const SURVEY_ACTION_DISMISSED = 'Dismissed survey notice';
 export const SURVEY_ACTION_SHOWN = 'Shown survey notice';
 export const SURVEY_ACTION_VISITED = 'Visited survey';
+
+// View Contexts that aren't an addonType
+export const VIEW_CONTEXT_EXPLORE = 'VIEW_CONTEXT_EXPLORE';
+export const VIEW_CONTEXT_HOME = 'VIEW_CONTEXT_HOME';
+// Language tools contain both ADDON_TYPE_DICT and ADDON_TYPE_LANG so
+// we share a custom view context for both add-on types.
+export const VIEW_CONTEXT_LANGUAGE_TOOLS = 'VIEW_CONTEXT_LANGUAGE_TOOLS';

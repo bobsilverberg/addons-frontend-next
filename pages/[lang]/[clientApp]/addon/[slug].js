@@ -26,16 +26,37 @@ function useRatings(addonId) {
 
 export default function Addon({ aProp, addonData, statusCode }) {
   const { i18n } = useI18nState();
-  console.log('----- In Addon, i18n: ', i18n);
+  // const { ratings, isLoading, isError } = useRatings(addonData.id);
 
-  console.log('----- In Addon, data: ', addonData);
-  const { ratings, isLoading, isError } = useRatings(addonData.id);
-  console.log('----- In Addon, ratings data: ', ratings);
-  const router = useRouter();
-  const { app, lang } = router.query;
-  console.log('----- In Addon, app: ', app);
-  console.log('----- In Addon, lang: ', lang);
-  console.log('----- In Addon, aProp: ', aProp);
+    // This makes sure we do not try to dispatch any new actions in the case
+    // of an error.
+    if (!errorHandler.hasError()) {
+      if (addon) {
+        // If the slug (which is actually the URL parameter) does not match the
+        // add-on's slug, it means the URL isn't the "canonical URL" and we
+        // have to send a server redirect to fix that. The URL can contain an
+        // add-on ID, a GUID or the actual slug. In some cases, it can have
+        // trailing spaces or slightly different characters. As far as the API
+        // returns an add-on for the value of this parameter, we should be able
+        // to display it, after the redirect below.
+        if (addon.slug !== params.slug) {
+          // We only load add-ons by slug, but ID must be supported too because
+          // it is a legacy behavior.
+          dispatch(
+            sendServerRedirect({
+              status: 301,
+              url: `/${lang}/${clientApp}${getAddonURL(addon.slug)}`,
+            }),
+          );
+          return;
+        }
+
+        dispatch(setViewContext(addon.type));
+      } else if (!addonIsLoading) {
+        dispatch(fetchAddon({ slug: params.slug, errorHandler }));
+      }
+    }
+  }
 
   if (statusCode) {
     return <Error statusCode={statusCode} />;
@@ -68,13 +89,39 @@ export default function Addon({ aProp, addonData, statusCode }) {
 }
 
 export async function getServerSideProps(context) {
-  // console.log('----- in getServerSideProps, context: ', context);
+  console.log(context);
+  const { lang, slug } = context.params;
+
   // Fetch data from external API
   const res = await fetch(
-    `	https://addons-dev.allizom.org/api/v4/addons/addon/webmail-ad-blocker/?app=firefox&appversion=84.0&lang=en-US&wrap_outgoing_links=true`,
+    `	https://addons-dev.allizom.org/api/v4/addons/addon/${slug}/?lang=${lang}`,
   );
   const statusCode = res.status > 200 ? res.status : false;
   const data = await res.json();
+
+  if (data && data.slug && data.slug !== slug) {
+    // If the slug (which is actually the URL parameter) does not match the
+    // add-on's slug, it means the URL isn't the "canonical URL" and we
+    // have to send a server redirect to fix that. The URL can contain an
+    // add-on ID, a GUID or the actual slug. In some cases, it can have
+    // trailing spaces or slightly different characters. As far as the API
+    // returns an add-on for the value of this parameter, we should be able
+    // to display it, after the redirect below.
+      return {
+        redirect: {
+          destination: `/${lang}/${clientApp}${getAddonURL(addon.slug)}`,
+          statusCode: 301,
+        },
+      };
+      // Old code from constructor
+      // dispatch(
+      //   sendServerRedirect({
+      //     status: 301,
+      //     url: `/${lang}/${clientApp}${getAddonURL(addon.slug)}`,
+      //   }),
+      // );
+      // return;
+    }
 
   // Pass data to the page via props
   return { props: { addonData: data, statusCode } };

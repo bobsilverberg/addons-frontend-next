@@ -117,6 +117,10 @@ export default function Addon({ addon, statusCode }) {
   const addonType = addon ? addon.type : ADDON_TYPE_EXTENSION;
   const addonPreviews = addon ? addon.previews : [];
 
+  console.log(
+    '---- in slug.js, numberOfAddonsByAuthors: ',
+    numberOfAddonsByAuthors,
+  );
   return (
     <div className={styles.container}>
       <Head>

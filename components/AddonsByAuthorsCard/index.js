@@ -23,6 +23,7 @@ import {
   ADDON_TYPE_STATIC_THEME,
   SEARCH_SORT_POPULAR,
 } from '../../constants';
+import { createInternalAddon } from 'utils/addons';
 // import { withErrorHandler } from 'amo/errorHandler';
 import styles from './styles.module.scss';
 import { useI18nState } from 'context/i18n';
@@ -51,6 +52,7 @@ export default function AddonsByAuthorsCard({
   const { setNumberOfAddonsByAuthors } = useGlobalState();
   const { i18n } = useI18nState();
   const router = useRouter();
+  const { lang } = router.query;
 
   function getCurrentPage() {
     // We don't want to set a `page` when there is no pagination.
@@ -74,7 +76,7 @@ export default function AddonsByAuthorsCard({
     if (paginate) {
       invariant(page, 'page is required when paginate is `true`.');
 
-      params.page = page;
+      params.page = getCurrentPage({ paginate, pageParam });
       params.sort = SEARCH_SORT_POPULAR;
     }
 
@@ -84,26 +86,23 @@ export default function AddonsByAuthorsCard({
     );
 
     return {
-      addons: data,
+      addons: data
+        ? data.results.map((addon) => createInternalAddon(addon, lang))
+        : null,
       isLoading: !error && !data,
       isError: error,
     };
   }
 
-  const { addons, isLoading, isError } = useAddons({
-    addonType,
-    authorIds,
-    forAddonSlug,
-    numberOfAddons,
-    page: getCurrentPage({ paginate, pageParam }),
-    paginate,
-  });
+  const { addons, isLoading, isError } = useAddons();
 
-  // Store the number of add-ons in global state so the add-on detail page can
-  // access it.
-  if (addons) {
-    setNumberOfAddonsByAuthors(addons.length);
-  }
+  useEffect(() => {
+    // Store the number of add-ons in global state so the add-on detail page can
+    // access it.
+    if (addons) {
+      setNumberOfAddonsByAuthors(addons.length);
+    }
+  }, [addons]);
 
   if (!isLoading && (!addons || !addons.length)) {
     return null;
@@ -227,6 +226,7 @@ export default function AddonsByAuthorsCard({
     //     ) : null;
     // }
 
+    console.log('---- in AddonsByAuthorsCard, returning AddonsCard...');
     return (
       <AddonsCard
         addons={addons}

@@ -430,3 +430,12 @@ export function convertBoolean(value) {
       return false;
   }
 }
+
+export function getQueryParametersForAttribution(router) {
+  return {
+    utm_campaign: router.query.utm_campaign,
+    utm_content: router.query.utm_content,
+    utm_medium: router.query.utm_medium,
+    utm_source: router.query.utm_source,
+  };
+}

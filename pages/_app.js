@@ -10,7 +10,7 @@ import { UserProvider } from '../context/user';
 
 import 'styles/globals.scss';
 import 'components/AddonTitle/styles.scss';
-// import 'components/AddonBadges/styles.scss';
+import 'components/DefinitionList/styles.scss';
 
 // See https://github.com/kirill-konshin/next-redux-wrapper#app
 // for an example of using a class instead of a function, and maybe I can

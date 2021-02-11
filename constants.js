@@ -103,3 +103,32 @@ export const VIEW_CONTEXT_HOME = 'VIEW_CONTEXT_HOME';
 // Language tools contain both ADDON_TYPE_DICT and ADDON_TYPE_LANG so
 // we share a custom view context for both add-on types.
 export const VIEW_CONTEXT_LANGUAGE_TOOLS = 'VIEW_CONTEXT_LANGUAGE_TOOLS';
+
+// Allows viewing and editing of any add-ons details in developer tools.
+export const ADDONS_EDIT = 'Addons:Edit';
+// Can access the add-on reviewer tools to approve/reject add-on submissions.
+export const ADDONS_REVIEW = 'Addons:Review';
+// Can view statistics for all addons, regardless of privacy settings.
+export const STATS_VIEW = 'Stats:View';
+// Can edit all Mozilla-owned collections.
+export const MOZILLA_COLLECTIONS_EDIT = 'Admin:Curation';
+// Can edit the special Featured Themes collection.
+export const FEATURED_THEMES_COLLECTION_EDIT = 'Collections:Contribute';
+// The slug for the special Featured Themes collection.
+export const FEATURED_THEMES_COLLECTION_SLUG = 'featured-personas';
+// Can approve add-ons content.
+export const ADDONS_CONTENT_REVIEW = 'Addons:ContentReview';
+// Can review unlisted add-ons.
+export const ADDONS_REVIEW_UNLISTED = 'Addons:ReviewUnlisted';
+// Can moderate user ratings on add-ons.
+export const RATINGS_MODERATE = 'Ratings:Moderate';
+// Can edit user accounts.
+export const USERS_EDIT = 'Users:Edit';
+// Super powers. It means absolutely all permissions.
+export const ALL_SUPER_POWERS = '*:*';
+// Can view only the reviewer tools.
+export const REVIEWER_TOOLS_VIEW = 'ReviewerTools:View';
+// Can review recommend(ed|able) add-ons.
+export const ADDONS_RECOMMENDED_REVIEW = 'Addons:RecommendedReview';
+// Can review a static theme.
+export const STATIC_THEMES_REVIEW = 'Addons:ThemeReview';

@@ -121,6 +121,12 @@ export default function Addon({ addon, statusCode }) {
     '---- in slug.js, numberOfAddonsByAuthors: ',
     numberOfAddonsByAuthors,
   );
+  // TODO: It seems like the className below isn't updated when numberOfAddonsByAuthors
+  // is changed in global state by another component. Would we expect this to work, or is
+  // this the kind of thing we need redux for?
+  //
+  // Note also that upon further investigation it doesn't seem like these classnames
+  // are actually used for anything anymore, so this particular use case isn't needed.
   return (
     <div className={styles.container}>
       <Head>

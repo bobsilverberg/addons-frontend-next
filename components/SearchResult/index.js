@@ -4,6 +4,7 @@ import makeClassName from 'classnames';
 // import { withRouter } from 'react-router-dom';
 // import { compose } from 'redux';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
 import {
@@ -41,6 +42,7 @@ export default function SearchResult({
 }) {
   const { i18n } = useI18nState();
   const { clientApp, lang } = useGlobalState();
+  const router = useRouter();
 
   const getAddonLink = () => {
     const { slug } = addon;
@@ -232,24 +234,13 @@ export default function SearchResult({
     );
   };
 
-  // TODO: We need history and lang for this.
   const onClickResult = () => {
-    // const {
-    //   addon,
-    //   addonInstallSource,
-    //   clientApp,
-    //   history,
-    //   lang,
-    //   onClick,
-    // } = this.props;
-    // if (addon) {
-    //   history.push(
-    //     `/${lang}/${clientApp}${this.getAddonLink(addon, addonInstallSource)}`,
-    //   );
-    //   if (onClick) {
-    //     onClick(addon);
-    //   }
-    // }
+    if (addon) {
+      router.push(getAddonLink(addon, addonInstallSource));
+      if (onClick) {
+        onClick(addon);
+      }
+    }
   };
 
   const result = renderResult();

@@ -7,7 +7,7 @@ import LoadingText from '../LoadingText';
 import { addQueryParams } from 'utils';
 import { useI18nState } from 'context/i18n';
 
-import styles from './styles.module.scss';
+// import styles from './styles.module.scss';
 
 export default function AddonTitle({
   addon,
@@ -47,7 +47,7 @@ export default function AddonTitle({
   }
 
   return (
-    <Component className={styles.AddonTitle}>
+    <Component className="AddonTitle">
       {addon ? (
         <>
           {linkToAddon ? (
@@ -63,7 +63,7 @@ export default function AddonTitle({
             addon.name
           )}
           {authors.length > 0 && (
-            <span className={styles['AddonTitle-author']}>
+            <span className="AddonTitle-author">
               {' '}
               {isRTL ? (
                 <>

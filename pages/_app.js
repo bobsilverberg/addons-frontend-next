@@ -9,6 +9,7 @@ import { Provider as SiteProvider, getSiteData } from '../context/site';
 import { UserProvider } from '../context/user';
 
 import 'styles/globals.scss';
+import 'components/AddonTitle/styles.scss';
 // import 'components/AddonBadges/styles.scss';
 
 // See https://github.com/kirill-konshin/next-redux-wrapper#app

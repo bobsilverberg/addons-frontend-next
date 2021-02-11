@@ -1,4 +1,3 @@
-/* @flow */
 import makeClassName from 'classnames';
 import invariant from 'invariant';
 import PropTypes from 'prop-types';

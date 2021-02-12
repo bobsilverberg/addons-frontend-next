@@ -7,6 +7,7 @@ import useSWR from 'swr';
 import { useI18nState } from 'context/i18n';
 import { useGlobalState } from 'context/global';
 import AddonsByAuthorsCard from 'components/AddonsByAuthorsCard';
+import AddonMoreInfo from 'components/AddonMoreInfo';
 import AddonTitle from 'components/AddonTitle';
 import Card from 'components/Card';
 import Page from 'components/Page';
@@ -191,13 +192,14 @@ export default function Addon({ addon, statusCode }) {
                 )} */}
               </div>
 
+              <AddonMoreInfo addon={addon} />
+
               {/* {this.renderRatingsCard()}
 
               <ContributeCard addon={addon} />
 
               <PermissionsCard version={currentVersion} />
 
-              <AddonMoreInfo addon={addon} />
 
               <AddAddonToCollection addon={addon} />
 

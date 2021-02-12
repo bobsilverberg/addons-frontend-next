@@ -1,26 +1,56 @@
 import { createContext, useContext, useReducer } from 'react';
 
-export const FINISH_UPDATE_USER_ACCOUNT = 'FINISH_UPDATE_USER_ACCOUNT';
-export const UPDATE_USER_ACCOUNT = 'UPDATE_USER_ACCOUNT';
+import { ALL_SUPER_POWERS, STATS_VIEW } from '../constants';
+
 export const LOG_IN_USER = 'LOG_IN_USER';
 export const LOG_OUT_USER = 'LOG_OUT_USER';
-export const LOAD_CURRENT_USER_ACCOUNT = 'LOAD_CURRENT_USER_ACCOUNT';
-export const FETCH_USER_ACCOUNT = 'FETCH_USER_ACCOUNT';
-export const LOAD_USER_ACCOUNT = 'LOAD_USER_ACCOUNT';
-export const DELETE_USER_PICTURE = 'DELETE_USER_PICTURE';
-export const FETCH_USER_NOTIFICATIONS = 'FETCH_USER_NOTIFICATIONS';
-export const LOAD_USER_NOTIFICATIONS = 'LOAD_USER_NOTIFICATIONS';
-export const DELETE_USER_ACCOUNT = 'DELETE_USER_ACCOUNT';
-export const UNLOAD_USER_ACCOUNT = 'UNLOAD_USER_ACCOUNT';
-export const UNSUBSCRIBE_NOTIFICATION = 'UNSUBSCRIBE_NOTIFICATION';
-export const ABORT_UNSUBSCRIBE_NOTIFICATION = 'ABORT_UNSUBSCRIBE_NOTIFICATION';
-export const FINISH_UNSUBSCRIBE_NOTIFICATION =
-  'FINISH_UNSUBSCRIBE_NOTIFICATION';
 
 const UserContext = createContext();
 
+function getCurrentUserId(state) {
+  const { currentUser } = state;
+
+  return (currentUser && currentUser.id) || null;
+}
+
+function hasPermission(state, permission) {
+  const { currentUser } = state;
+
+  // If the user isn't authenticated, they have no permissions.
+  if (!currentUser) {
+    return false;
+  }
+
+  const { permissions } = currentUser;
+  if (!permissions) {
+    return false;
+  }
+
+  // Admins have absolutely all permissions.
+  if (permissions.includes(ALL_SUPER_POWERS)) {
+    return true;
+  }
+
+  // Match exact permissions.
+  if (permissions.includes(permission)) {
+    return true;
+  }
+
+  // See: https://github.com/mozilla/addons-frontend/issues/8575
+  const appsWithAllPermissions = permissions
+    // Only consider permissions with wildcards.
+    .filter((perm) => perm.endsWith(':*'))
+    // Return the permission "app".
+    // See: https://github.com/mozilla/addons-server/blob/3a15aafb703349923ee2eb9a9f7b527ba9b16c03/src/olympia/constants/permissions.py#L4
+    .map((perm) => perm.replace(':*', ''));
+
+  const app = permission.split(':')[0];
+
+  return appsWithAllPermissions.includes(app);
+}
+
 const initialState = {
-  currentUserID: null,
+  currentUser: null,
   isUpdating: false,
   userPageBeingViewed: {
     loading: false,
@@ -28,6 +58,14 @@ const initialState = {
   },
   currentUserWasLoggedOut: false,
   resetStateOnNextChange: false,
+  getCurrentUserId,
+  hasPermission,
+};
+
+// This is just a fake user for playing around with using this reducer.
+const testUser = {
+  id: 123,
+  permissions: [STATS_VIEW],
 };
 
 const reducer = (state, action) => {
@@ -35,12 +73,12 @@ const reducer = (state, action) => {
     case LOG_IN_USER:
       return {
         ...state,
-        currentUserID: action.payload.user.id,
+        currentUser: testUser,
         currentUserWasLoggedOut: false,
       };
 
     case LOG_OUT_USER:
-      return { ...state, currentUserID: null, currentUserWasLoggedOut: true };
+      return { ...state, currentUser: null, currentUserWasLoggedOut: true };
 
     default:
       return state;
@@ -57,6 +95,6 @@ export function UserProvider({ children }) {
   );
 }
 
-export const useUserContext = () => useContext(UserContext);
+export const useUserState = () => useContext(UserContext);
 
 export default UserProvider;

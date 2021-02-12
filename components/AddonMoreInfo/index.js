@@ -1,18 +1,21 @@
 // import AddonAdminLinks from 'amo/components/AddonAdminLinks';
 // import AddonAuthorLinks from 'amo/components/AddonAuthorLinks';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { STATS_VIEW } from '../../constants';
-import { hasPermission } from 'amo/reducers/users';
 import { isAddonAuthor } from 'utils';
 import Card from 'components/Card';
 import DefinitionList, { Definition } from 'components/DefinitionList';
 import LoadingText from 'components/LoadingText';
 import { addQueryParams, getQueryParametersForAttribution } from 'utils';
 import { useI18nState } from 'context/i18n';
+import { useUserState } from 'context/user';
 
 export default function AddonMoreInfo({ addon }) {
   const { i18n } = useI18nState();
+  const { state: userState } = useUserState();
+  const router = useRouter();
 
   function renderDefinitions({
     homepage = null,
@@ -170,42 +173,20 @@ export default function AddonMoreInfo({ addon }) {
     }
 
     let statsLink = null;
-    if (isAddonAuthor({ addon, userId }) || hasStatsPermission) {
+    if (
+      isAddonAuthor({ addon, userId: userState.getCurrentUserId(userState) }) ||
+      userState.hasPermission(userState, STATS_VIEW)
+    ) {
       statsLink = (
         <Link
           className="AddonMoreInfo-stats-link"
           href={addQueryParams(
             `/addon/${addon.slug}/statistics/`,
-            getQueryParametersForAttribution(location),
+            getQueryParametersForAttribution(router),
           )}
         >
           {i18n.gettext('Visit stats dashboard')}
         </Link>
-      );
-    }
-
-    const lastUpdated = versionInfo && versionInfo.created;
-
-    const license = currentVersion && currentVersion.license;
-    let versionLicenseLink = null;
-
-    if (license) {
-      const linkProps = license.isCustom
-        ? {
-            to: addQueryParams(
-              `/addon/${addon.slug}/license/`,
-              getQueryParametersForAttribution(location),
-            ),
-          }
-        : { href: license.url, prependClientApp: false, prependLang: false };
-      const licenseName = license.name || i18n.gettext('Custom License');
-
-      versionLicenseLink = license.url ? (
-        <Link className="AddonMoreInfo-license-link" {...linkProps}>
-          {licenseName}
-        </Link>
-      ) : (
-        <span className="AddonMoreInfo-license-name">{licenseName}</span>
       );
     }
 
@@ -214,26 +195,12 @@ export default function AddonMoreInfo({ addon }) {
       supportUrl,
       supportEmail,
       statsLink,
-      version: currentVersion ? currentVersion.version : null,
-      filesize: versionInfo && versionInfo.filesize,
-      versionLastUpdated: lastUpdated
-        ? i18n.sprintf(
-            // translators: This will output, in English:
-            // "2 months ago (Dec 12 2016)"
-            i18n.gettext('%(timeFromNow)s (%(date)s)'),
-            {
-              timeFromNow: i18n.moment(lastUpdated).fromNow(),
-              date: i18n.moment(lastUpdated).format('ll'),
-            },
-          )
-        : null,
-      versionLicenseLink,
       privacyPolicyLink: addon.has_privacy_policy ? (
         <Link
           className="AddonMoreInfo-privacy-policy-link"
-          to={addQueryParams(
+          href={addQueryParams(
             `/addon/${addon.slug}/privacy/`,
-            getQueryParametersForAttribution(location),
+            getQueryParametersForAttribution(router),
           )}
         >
           {i18n.gettext('Read the privacy policy for this add-on')}
@@ -242,9 +209,9 @@ export default function AddonMoreInfo({ addon }) {
       eulaLink: addon.has_eula ? (
         <Link
           className="AddonMoreInfo-eula-link"
-          to={addQueryParams(
+          href={addQueryParams(
             `/addon/${addon.slug}/eula/`,
-            getQueryParametersForAttribution(location),
+            getQueryParametersForAttribution(router),
           )}
         >
           {i18n.gettext('Read the license agreement for this add-on')}
@@ -254,9 +221,9 @@ export default function AddonMoreInfo({ addon }) {
         <li>
           <Link
             className="AddonMoreInfo-version-history-link"
-            to={addQueryParams(
+            href={addQueryParams(
               `/addon/${addon.slug}/versions/`,
-              getQueryParametersForAttribution(location),
+              getQueryParametersForAttribution(router),
             )}
           >
             {i18n.gettext('See all versions')}

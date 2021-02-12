@@ -1,8 +1,10 @@
 import makeClassName from 'classnames';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import { LOG_IN_USER, LOG_OUT_USER, useUserState } from 'context/user';
 
 import AppBanner from '../AppBanner';
+import Button from '../Button';
 // import NotFound from 'amo/components/Errors/NotFound';
 // import UnavailableForLegalReasons from 'amo/components/Errors/UnavailableForLegalReasons';
 // import Footer from 'amo/components/Footer';
@@ -45,6 +47,7 @@ export default function Page({
   //       _log.warn(logMessage);
   //     }
   //   }
+  const { dispatch, state: userState } = useUserState();
 
   return (
     <div className={styles['Page-amo']}>
@@ -63,6 +66,16 @@ export default function Page({
             <Link href="/en-US/firefox/">
               <a>Go home</a>
             </Link>
+            {!userState.getCurrentUserId(userState) && (
+              <button onClick={() => dispatch({ type: LOG_IN_USER })}>
+                login
+              </button>
+            )}
+            {userState.getCurrentUserId(userState) && (
+              <button onClick={() => dispatch({ type: LOG_OUT_USER })}>
+                logout
+              </button>
+            )}
           </div>
           {
             // Exclude the AppBanner from the home page, but include it on the

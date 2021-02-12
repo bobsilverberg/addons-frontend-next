@@ -1,6 +1,5 @@
 import makeClassName from 'classnames';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import useSWR from 'swr';
@@ -23,12 +22,9 @@ import {
 } from '../../../../constants';
 import styles from './styles.module.scss';
 
-// const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
 function useRatings(addonId) {
   const { data, error } = useSWR(
     `https://addons-dev.allizom.org/api/v4/ratings/rating/?addon=${addonId}&show_grouped_ratings=true&lang=en-US&wrap_outgoing_links=true`,
-    // fetcher
   );
 
   return {
@@ -39,11 +35,7 @@ function useRatings(addonId) {
 }
 
 export default function Addon({ addon, statusCode }) {
-  const {
-    numberOfAddonsByAuthors,
-    setViewContext,
-    viewContext,
-  } = useGlobalState();
+  const { numberOfAddonsByAuthors, setViewContext } = useGlobalState();
   const { i18n } = useI18nState();
 
   useEffect(() => {
@@ -116,12 +108,7 @@ export default function Addon({ addon, statusCode }) {
 
   const isThemeType = addon && addon.type === ADDON_TYPE_STATIC_THEME;
   const addonType = addon ? addon.type : ADDON_TYPE_EXTENSION;
-  const addonPreviews = addon ? addon.previews : [];
 
-  console.log(
-    '---- in slug.js, numberOfAddonsByAuthors: ',
-    numberOfAddonsByAuthors,
-  );
   // TODO: It seems like the className below isn't updated when numberOfAddonsByAuthors
   // is changed in global state by another component. Would we expect this to work, or is
   // this the kind of thing we need redux for?
@@ -165,45 +152,13 @@ export default function Addon({ addon, statusCode }) {
                   {ratings ? ratings.grouped_ratings[1] : null}
                 </div>
               </Card>
-              {/* <AddonMoreInfo addon={addonData} i18n={i18n} /> */}
-              <Card className="Addon-header-meta-and-ratings" photonStyle>
-                {/* <AddonMeta addon={addon} /> */}
-              </Card>
             </div>
             <div className="Addon-details">
               <div className="Addon-main-content">
                 {renderAddonsByAuthorsCard({ isForTheme: true })}
-
-                {/* {addonPreviews.length > 0 && !isThemeType ? (
-                  <Card
-                    className="Addon-screenshots"
-                    header={i18n.gettext('Screenshots')}
-                  >
-                    <ScreenShots previews={addonPreviews} />
-                  </Card>
-                ) : null}
-
-                {this.renderShowMoreCard()}
-
-                {this.renderDevCommentsCard()} */}
-
-                {/* {addonType === ADDON_TYPE_EXTENSION && (
-                  <AddonRecommendations addon={addon} />
-                )} */}
               </div>
 
               <AddonMoreInfo addon={addon} />
-
-              {/* {this.renderRatingsCard()}
-
-              <ContributeCard addon={addon} />
-
-              <PermissionsCard version={currentVersion} />
-
-
-              <AddAddonToCollection addon={addon} />
-
-              {this.renderVersionReleaseNotes()} */}
 
               {renderAddonsByAuthorsCard({ isForTheme: false })}
             </div>
@@ -223,7 +178,6 @@ export async function getServerSideProps(context) {
   const { clientApp, lang, slug } = context.params;
 
   // Fetch data from external API
-  console.log('--- fetching data on the server for: ', slug);
   const res = await fetch(
     `	https://addons-dev.allizom.org/api/v5/addons/addon/${slug}/?lang=${lang}`,
   );

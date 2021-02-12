@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { getAddonURL } from 'utils';
-import { isRtlLang } from 'i18n/utils_next';
+import { isRtlLang } from 'i18n/utils';
 import LoadingText from '../LoadingText';
 import { addQueryParams } from 'utils';
 import { useI18nState } from 'context/i18n';

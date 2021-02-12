@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 
-import { makeI18n } from '../i18n/utils_next';
+import { makeI18n } from '../i18n/utils';
 
 const I18nContext = createContext();
 
